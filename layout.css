@@ -561,6 +561,116 @@ header .head-top .top-menu ul li.active .btn {
   padding-bottom: 0;
 }
 
+/* ============================================================
+   6b. Skills — Tags  (moderne variant, zonder percentages)
+   Plak dit ONDERAAN je bestaande stylesheet.
+   Werkt binnen je bestaande .section.skills > .content structuur.
+     <li class="is-core"> = kernvaardigheid (ingevuld, oranje)
+     <li>                 = vertrouwd mee   (omlijnd)
+   ============================================================ */
+
+/* categorie-blok: titel + bijhorende tags */
+.skills .skill-cat {
+  margin-bottom: 45px;
+}
+
+.skills .skill-cat:last-child {
+  margin-bottom: 0;
+}
+
+/* iets strakkere afstand titel -> tags dan de standaard 40px */
+.skills .skill-cat .title {
+  margin-bottom: 22px;
+}
+
+/* optionele legenda boven de categorieën */
+.skills-legend {
+  margin: 0 0 35px 0;
+  font-size: 0;
+}
+
+.skills-legend span {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 25px;
+  font-size: 11px;
+  color: #363636;
+  letter-spacing: 0.04em;
+}
+
+.skills-legend .dot {
+  display: inline-block;
+  vertical-align: middle;
+  width: 11px;
+  height: 11px;
+  margin-right: 8px;
+  border-radius: 11px;
+  -webkit-border-radius: 11px;
+}
+
+.skills-legend .dot.core {
+  background: #f26b38;
+}
+
+.skills-legend .dot.familiar {
+  border: 1px solid #dddddd;
+}
+
+/* de tag-lijst zelf */
+.skills.tags ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px; /* overschrijft de font-size:0 van .skills ul */
+}
+
+.skills.tags ul li {
+  padding: 9px 14px;
+  font-size: 13px;
+  line-height: 1;
+  color: #363636;
+  background: transparent;
+  border: 1px solid #dddddd;
+  border-radius: 100px;
+  -webkit-border-radius: 100px;
+  cursor: default;
+  transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -webkit-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+}
+
+/* overschrijft .skills ul li:last-child { padding-bottom: 0 } */
+.skills.tags ul li:last-child {
+  padding-bottom: 9px;
+}
+
+/* kernvaardigheid */
+.skills.tags ul li.is-core {
+  color: #ffffff;
+  font-weight: 500;
+  background: #f26b38;
+  border-color: #f26b38;
+}
+
+/* hover */
+.skills.tags ul li:hover {
+  border-color: #f26b38;
+}
+
+.skills.tags ul li:not(.is-core):hover {
+  color: #f26b38;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skills.tags ul li {
+    transition: none;
+  }
+}
+
 /* 7. Service */
 @media (max-width: 400px) {
   .section.service {
