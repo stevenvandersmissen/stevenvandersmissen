@@ -2278,3 +2278,81 @@ a.btn, .btn {
     width: 100%;
   }
 }
+/* Custom skill pills fix */
+.section.skills .skills-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: -15px 0 40px 0;
+  font-size: 12px;
+  color: #363636;
+}
+
+.section.skills .skills-legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section.skills .dot {
+  width: 9px;
+  height: 9px;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.section.skills .dot.core {
+  background: #f26b38;
+}
+
+.section.skills .dot.familiar {
+  background: #dddddd;
+}
+
+.section.skills .skill-cat {
+  margin-bottom: 45px;
+}
+
+.section.skills .skill-cat .title {
+  margin-bottom: 20px;
+}
+
+.section.skills .skill-tags ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  /* Belangrijk: overschrijft .skills ul { font-size: 0; } */
+  font-size: 13px;
+}
+
+.section.skills .skill-tags ul li {
+  display: inline-flex;
+  align-items: center;
+  width: auto;
+  margin: 0;
+  padding: 8px 13px;
+  border: 1px solid #dddddd;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #363636;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 400;
+  white-space: nowrap;
+  opacity: 1;
+  visibility: visible;
+}
+
+.section.skills .skill-tags ul li.is-core {
+  border-color: #f26b38;
+  background: #f26b38;
+  color: #ffffff;
+}
+
+.section.skills .skill-tags ul li:last-child {
+  padding: 8px 13px;
+}
