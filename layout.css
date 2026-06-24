@@ -562,28 +562,28 @@ header .head-top .top-menu ul li.active .btn {
 }
 
 /* ============================================================
-   6b. Skills — Tags  (moderne variant, zonder percentages)
-   Plak dit ONDERAAN je bestaande stylesheet.
-   Werkt binnen je bestaande .section.skills > .content structuur.
-     <li class="is-core"> = kernvaardigheid (ingevuld, oranje)
-     <li>                 = vertrouwd mee   (omlijnd)
+   Skills — Pills / Tags
+   Nieuwe variant zonder conflict met de bestaande .skills-styling
    ============================================================ */
 
-/* categorie-blok: titel + bijhorende tags */
-.skills .skill-cat {
+.section.skills .content > .title {
+  margin-bottom: 35px;
+}
+
+.section.skills .skill-cat {
   margin-bottom: 45px;
 }
 
-.skills .skill-cat:last-child {
+.section.skills .skill-cat:last-child {
   margin-bottom: 0;
 }
 
-/* iets strakkere afstand titel -> tags dan de standaard 40px */
-.skills .skill-cat .title {
+.section.skills .skill-cat .title {
   margin-bottom: 22px;
 }
 
-/* optionele legenda boven de categorieën */
+/* Legenda */
+
 .skills-legend {
   margin: 0 0 35px 0;
   font-size: 0;
@@ -604,8 +604,8 @@ header .head-top .top-menu ul li.active .btn {
   width: 11px;
   height: 11px;
   margin-right: 8px;
-  border-radius: 11px;
-  -webkit-border-radius: 11px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
 }
 
 .skills-legend .dot.core {
@@ -613,22 +613,27 @@ header .head-top .top-menu ul li.active .btn {
 }
 
 .skills-legend .dot.familiar {
+  background: transparent;
   border: 1px solid #dddddd;
 }
 
-/* de tag-lijst zelf */
-.skills.tags ul {
+/* Pill-lijst */
+
+.skill-tags ul {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin: 0;
   padding: 0;
   list-style: none;
-  font-size: 13px; /* overschrijft de font-size:0 van .skills ul */
+  font-size: 13px;
 }
 
-.skills.tags ul li {
+.skill-tags ul li {
+  display: inline-block;
+  position: relative;
   padding: 9px 14px;
+  margin: 0;
   font-size: 13px;
   line-height: 1;
   color: #363636;
@@ -643,34 +648,60 @@ header .head-top .top-menu ul li.active .btn {
   -o-transition: all 0.3s ease 0s;
 }
 
-/* overschrijft .skills ul li:last-child { padding-bottom: 0 } */
-.skills.tags ul li:last-child {
-  padding-bottom: 9px;
+/* Belangrijk: voorkomt dat oude .skills ul li:last-child-regels de laatste pill kapot maken */
+
+.skill-tags ul li:last-child {
+  padding: 9px 14px;
 }
 
-/* kernvaardigheid */
-.skills.tags ul li.is-core {
+/* Kernvaardigheden */
+
+.skill-tags ul li.is-core {
   color: #ffffff;
   font-weight: 500;
   background: #f26b38;
   border-color: #f26b38;
 }
 
-/* hover */
-.skills.tags ul li:hover {
+/* Hover */
+
+.skill-tags ul li:hover {
   border-color: #f26b38;
 }
 
-.skills.tags ul li:not(.is-core):hover {
+.skill-tags ul li:not(.is-core):hover {
   color: #f26b38;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .skills.tags ul li {
-    transition: none;
+/* Mobiel */
+
+@media (max-width: 580px) {
+  .skills-legend span {
+    display: block;
+    margin: 0 0 12px 0;
+  }
+
+  .skill-tags ul {
+    gap: 7px;
+  }
+
+  .skill-tags ul li {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+
+  .skill-tags ul li:last-child {
+    padding: 8px 12px;
   }
 }
 
+/* Minder animatie indien ingesteld in browser */
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-tags ul li {
+    transition: none;
+  }
+}
 /* 7. Service */
 @media (max-width: 400px) {
   .section.service {
