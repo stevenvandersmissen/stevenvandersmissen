@@ -80,32 +80,35 @@ worden met Phaser-graphics gegenereerd in de kleuren van het actieve thema.
   (waardoor de header "leeg" leek) — opacity/transform worden nu inline gepind
   zodra de intro-animatie eindigt
 
-## Wave 4 — interactieve physics playground in de lege hero-zone
+## Wave 4/5 — hero physics: van particles naar ball pit
 
+Iteraties: wave 4 v1 = GSAP-particleveld (door gebruiker afgekeurd),
+wave 4 v2 = blokken-playground (Matter.js), wave 5 = huidige **ball pit**.
 `js/physics.js` + `js/matter.min.js` (Matter.js 0.19) + `js/gsap.min.js`
-(GSAP 3.12.5) — beide lokaal, geen CDN. Verving het eerdere particle-veld.
+(GSAP 3.12.5) — beide lokaal, geen CDN.
 
-Een echte rigid-body simulatie in de lege ruimte boven de hero-titel:
+Een ball pool van ~56 flat ballen (gevuld met shine-dot of outline met kern)
+rust op een richel net boven de gigantische titel (positie uit de DOM berekend,
+dus altijd in de échte lege zone, op elk formaat).
 
-- **Shapes**: vierkanten, balken, zeskanten, driehoeken en bolletjes — gevuld
-  of outline — vallen in clusters binnen en stapelen op een onzichtbare richel
-  net boven de gigantische titel (de plank-positie wordt uit de DOM berekend,
-  dus altijd in de échte lege zone, op elk formaat)
-- **Grab & throw**: pak een shape vast en slinger hem weg (eigen pointer-logica
-  met throw-velocity uit de pointer-trail — werkt met muis én touch, zonder
-  het scrollen van de pagina te blokkeren); gestippelde tether tijdens vasthouden
-- **Click = spawn** op de cursorpositie, **double-click = reset** met pop-out
-  en verse regen; max. 34 bodies (oudste wordt weggepopt)
+- **Cursor-krachtveld**: beweeg door de pit en de ballen wijken uiteen rond je
+  cursor (radius 150 px, kwadratische falloff + lichte lift) — reageert altijd,
+  ook zonder iets vast te pakken
+- **Grab & throw**: pak een bal vast en slinger hem weg (throw-velocity uit de
+  pointer-trail; muis én touch, blokkeert pagina-scroll niet); gestippelde tether
+- **Click = blast**: radiale impuls + uitdijende ring, ballen vliegen uiteen
+- **2× click = flip gravity**: zwaartekracht keert ~2 s om, de hele pit zweeft
+  omhoog door de header en regent dan terug
+- **Matter-physics**: gravity, restitution 0.62, wrijving, sleeping (spaart CPU
+  zodra de pit ligt); max 64 ballen, oudste wordt weggepopt
 - **GSAP-juice**: elastic pop-in bij spawn, back.in pop-out bij removal,
-  impact-ringen bij harde botsingen, ambient rain om de 6–12 s
-- **Matter-physics**: gravity, restitution, friction, angular velocity,
-  sleeping (spaart CPU zodra de stapel ligt)
+  impact-ringen bij harde botsingen, ambient rain om de 6–13 s
 - Eigen flat 2D-rendering in de themakleuren (kleurt live mee via `themechange`),
-  shelf-lijn met streepjes en een `[ playground ]`-tag
-- Pauzeert buiten beeld / verborgen tab; bij `prefers-reduced-motion` wordt een
-  statische, vooraf gesettelde stapel getekend zonder interactie
-- Hint `[ drag & throw ] / [ click = spawn · 2× click = reset ]` fade uit na
-  de eerste interactie
+  richel-lijn met streepjes en een `[ ball pit ]`-tag
+- Pauzeert buiten beeld / verborgen tab; bij `prefers-reduced-motion` een
+  statische, vooraf gesettelde pit zonder interactie
+- Hint `[ move to part · drag to throw · click = blast ] / [ 2× click = flip
+  gravity ]` fade uit na de eerste interactie
 
 ## Publiceren
 

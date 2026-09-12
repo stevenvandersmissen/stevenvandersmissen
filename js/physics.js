@@ -1,10 +1,11 @@
 /* ==========================================================================
-   HERO PHYSICS PLAYGROUND — Matter.js + GSAP
-   Flat shapes (squares, rects, hexagons, triangles, balls — filled or outlined)
-   drop into the empty hero zone and pile up on an invisible shelf.
-   Grab & throw them with mouse or touch, click empty space to spawn a new
-   one, double-click to pop-reset the pile. GSAP adds spawn pops, reset pops
-   and impact sparks; rendering is a custom flat 2D pass in the theme colours.
+   HERO BALL PIT — Matter.js + GSAP
+   A pool of flat balls (filled / outlined, with a little shine dot) rests on a
+   ledge right above the giant headline. The cursor is a force field: move
+   through the pit and the balls part around you. Drag one to grab & throw it,
+   click for a radial blast, double-click to flip gravity for a moment so the
+   whole pit rains back down. GSAP adds spawn pops and impact rings; rendering
+   is a custom flat 2D pass in the theme colours.
    ========================================================================== */
 (function () {
   'use strict';
@@ -23,9 +24,10 @@
   var fg = '#000000';
   var bgColor = '#00ff11';
 
-  var SHELF = 0.56;            /* shelf height as fraction of hero height */
   var WALL = 0.03;             /* side wall inset as fraction of width */
-  var MAX_BODIES = 34;
+  var MAX_BODIES = 64;
+  var FIELD_R = 150;           /* cursor force-field radius, css px */
+  var BLAST_R = 280;           /* click blast radius, css px */
 
   function readColors() {
     var cs = getComputedStyle(document.documentElement);
@@ -38,7 +40,7 @@
   var engine = Matter.Engine.create({ enableSleeping: true });
   var world = engine.world;
 
-  var bodies = [];             /* dynamic bodies, in spawn order */
+  var bodies = [];             /* dynamic balls, in spawn order */
   var statics = [];
   var sparks = [];             /* {x,y,r,alpha} impact rings */
   var shelfY = 0, wallL = 0, wallR = 0;
@@ -46,8 +48,7 @@
   function buildStatic() {
     statics.forEach(function (b) { Matter.World.remove(world, b); });
 
-    /* the shelf is a ledge right above the giant headline: shapes balance
-       on top of the title block, never through it */
+    /* the ledge sits in the real empty gap: just above the hero title block */
     var hb = hero.querySelector('.hero__bottom');
     var h1 = hero.querySelector('.hero__title');
     var hd = hero.querySelector('.hero__head');
@@ -65,53 +66,32 @@
     var t = 60 * DPR;
     statics = [
       Matter.Bodies.rectangle(W / 2, shelfY + t / 2, W, t, { isStatic: true }),
-      Matter.Bodies.rectangle(wallL - t / 2, H / 2, t, H * 3, { isStatic: true }),
-      Matter.Bodies.rectangle(wallR + t / 2, H / 2, t, H * 3, { isStatic: true })
+      Matter.Bodies.rectangle(wallL - t / 2, H / 2, t, H * 4, { isStatic: true }),
+      Matter.Bodies.rectangle(wallR + t / 2, H / 2, t, H * 4, { isStatic: true })
     ];
     Matter.World.add(world, statics);
   }
 
   /* ----------------------------------------------------------- spawning */
-  var KINDS = ['square', 'rect', 'hex', 'tri', 'ball'];
-
-  function makeBody(x, y) {
-    var kind = KINDS[Math.floor(Math.random() * KINDS.length)];
-    var narrow = (W / DPR) < 640 ? 0.75 : 1;
-    var size = (20 + Math.random() * 30) * DPR * narrow;
-    var body;
-
-    if (kind === 'ball') {
-      body = Matter.Bodies.circle(x, y, size * 0.55, { restitution: 0.75 });
-    } else if (kind === 'square') {
-      body = Matter.Bodies.rectangle(x, y, size, size, { restitution: 0.35 });
-    } else if (kind === 'rect') {
-      body = Matter.Bodies.rectangle(x, y, size * 1.7, size * 0.7, { restitution: 0.3 });
-    } else if (kind === 'hex') {
-      body = Matter.Bodies.polygon(x, y, 6, size * 0.62, { restitution: 0.4 });
-    } else {
-      body = Matter.Bodies.polygon(x, y, 3, size * 0.7, { restitution: 0.35 });
-    }
-
-    body.friction = 0.4;
-    body.frictionAir = 0.012;
-    body.angle = Math.random() * Math.PI;
-    body.angularVelocity = (Math.random() - 0.5) * 0.2;
-
+  function makeBall(x, y, r) {
+    var radius = r || (11 + Math.random() * 17) * DPR * ((W / DPR) < 640 ? 0.8 : 1);
+    var body = Matter.Bodies.circle(x, y, radius, {
+      restitution: 0.62,
+      friction: 0.06,
+      frictionAir: 0.009
+    });
     body.plugin.meta = {
-      kind: kind,
       scale: 0,
-      style: Math.random() < 0.72 ? 'fill' : 'stroke'
+      style: Math.random() < 0.68 ? 'fill' : 'ring'
     };
-
     Matter.World.add(world, body);
     bodies.push(body);
 
     if (!reduce) {
-      gsap.to(body.plugin.meta, { scale: 1, duration: 0.8, ease: 'elastic.out(1, 0.5)' });
+      gsap.to(body.plugin.meta, { scale: 1, duration: 0.7, ease: 'elastic.out(1, 0.55)' });
     } else {
       body.plugin.meta.scale = 1;
     }
-
     trimBodies();
     return body;
   }
@@ -122,7 +102,7 @@
     if (grabbed === body) grabbed = null;
     if (reduce) { Matter.World.remove(world, body); return; }
     gsap.to(body.plugin.meta, {
-      scale: 0, duration: 0.35, ease: 'back.in(2)',
+      scale: 0, duration: 0.3, ease: 'back.in(2)',
       onComplete: function () { Matter.World.remove(world, body); }
     });
   }
@@ -131,34 +111,22 @@
     while (bodies.length > MAX_BODIES) popRemove(bodies[0]);
   }
 
-  function seedPile() {
-    var n = (W / DPR) < 640 ? 8 : 15;
-    /* drop in a few clusters so real little piles form */
-    var clusters = [0.28, 0.5, 0.74].map(function (f) {
-      return wallL + (wallR - wallL) * f;
-    });
+  function seedPit() {
+    var n = (W / DPR) < 640 ? 28 : 56;
     for (var i = 0; i < n; i++) {
-      gsap.delayedCall(0.35 + i * 0.1, function () {
-        var cx = clusters[Math.floor(Math.random() * clusters.length)];
-        var x = cx + (Math.random() - 0.5) * 70 * DPR;
-        makeBody(x, -40 * DPR - Math.random() * 60 * DPR);
+      gsap.delayedCall(0.3 + i * 0.05, function () {
+        makeBall(wallL + 20 * DPR + Math.random() * (wallR - wallL - 40 * DPR),
+          -30 * DPR - Math.random() * 140 * DPR);
       });
     }
   }
 
-  function resetPile() {
-    hideHint();
-    bodies.slice().forEach(function (b, i) {
-      gsap.delayedCall(i * 0.02, function () { popRemove(b); });
-    });
-    gsap.delayedCall(0.55, seedPile);
-  }
-
-  /* --------------------------------------------- grab / throw / spawn */
+  /* ------------------------------------------- cursor force field / grab */
   var grabbed = null;
-  var pointer = { x: 0, y: 0 };
-  var trail = [];              /* recent pointer samples for throw velocity */
+  var pointer = { x: -9999, y: -9999, active: false };
+  var trail = [];
   var downAt = 0, downX = 0, downY = 0, moved = 0;
+  var flipping = false;
 
   function canvasPoint(e) {
     var r = canvas.getBoundingClientRect();
@@ -170,6 +138,8 @@
     return hit.length ? hit[hit.length - 1] : null;
   }
 
+  function wake(b) { if (b.isSleeping) Matter.Sleeping.set(b, false); }
+
   /* listeners live on the HERO (the canvas sits behind the content boxes);
      clicks on links/buttons are left untouched */
   function isInteractive(e) {
@@ -180,23 +150,23 @@
     if (isInteractive(e)) return;
     var p = canvasPoint(e);
     downAt = Date.now(); downX = e.clientX; downY = e.clientY; moved = 0;
-    pointer.x = p.x; pointer.y = p.y;
+    pointer.x = p.x; pointer.y = p.y; pointer.active = true;
 
     var b = bodyAt(p.x, p.y);
     if (b && b.plugin.meta.scale > 0.6) {
       grabbed = b;
-      Matter.Sleeping.set(b, false);
+      wake(b);
       trail.length = 0;
       hero.classList.add('is-grabbing');
       hero.setPointerCapture(e.pointerId);
       e.preventDefault();               /* no text selection while dragging */
-      hideHint();
     }
+    hideHint();
   });
 
   hero.addEventListener('pointermove', function (e) {
     var p = canvasPoint(e);
-    pointer.x = p.x; pointer.y = p.y;
+    pointer.x = p.x; pointer.y = p.y; pointer.active = true;
     if (downAt) moved = Math.max(moved, Math.hypot(e.clientX - downX, e.clientY - downY));
     if (grabbed) {
       trail.push({ x: p.x, y: p.y, t: performance.now() });
@@ -216,7 +186,6 @@
       var m = Math.hypot(vx, vy);
       if (m > cap) { vx = vx / m * cap; vy = vy / m * cap; }
       Matter.Body.setVelocity(grabbed, { x: vx, y: vy });
-      Matter.Body.setAngularVelocity(grabbed, vx * 0.004);
     }
     grabbed = null;
     hero.classList.remove('is-grabbing');
@@ -234,35 +203,89 @@
     downAt = 0;
     if (wasGrab || !quick || !still) return;
 
-    var p = canvasPoint(e);
-    var y = Math.min(p.y, shelfY - 70 * DPR);
-    hideHint();
-    var b = makeBody(p.x, y);
-    b.velocity.x = (Math.random() - 0.5) * 6;
-    b.angularVelocity = (Math.random() - 0.5) * 0.35;
+    blast(canvasPoint(e));
   });
 
   hero.addEventListener('pointercancel', release);
+  hero.addEventListener('pointerleave', function () {
+    pointer.active = false;
+    pointer.x = pointer.y = -9999;
+  });
 
   hero.addEventListener('dblclick', function (e) {
     if (isInteractive(e)) return;
     e.preventDefault();
-    resetPile();
+    flipGravity();
   });
 
   function hideHint() {
     if (hint && !hint.classList.contains('is-off')) hint.classList.add('is-off');
   }
 
-  /* spring the grabbed body towards the pointer every tick */
-  Matter.Events.on(engine, 'beforeUpdate', function () {
-    if (!grabbed) return;
-    Matter.Sleeping.set(grabbed, false);
-    var k = 0.22;
-    Matter.Body.setVelocity(grabbed, {
-      x: (pointer.x - grabbed.position.x) * k,
-      y: (pointer.y - grabbed.position.y) * k
+  /* radial blast: kick every ball away from the click */
+  function blast(p) {
+    if (reduce) return;
+    var R = BLAST_R * DPR;
+    bodies.forEach(function (b) {
+      var dx = b.position.x - p.x;
+      var dy = b.position.y - p.y;
+      var d = Math.hypot(dx, dy);
+      if (d > R || d < 0.001) return;
+      wake(b);
+      var f = (1 - d / R) * 22 * DPR;
+      Matter.Body.setVelocity(b, {
+        x: b.velocity.x + (dx / d) * f,
+        y: b.velocity.y + (dy / d) * f - 3 * DPR
+      });
     });
+    var s = { x: p.x, y: p.y, r: 6 * DPR, alpha: 0.65 };
+    sparks.push(s);
+    gsap.to(s, { r: R * 0.8, duration: 0.55, ease: 'power2.out' });
+    gsap.to(s, {
+      alpha: 0, duration: 0.55, ease: 'power1.in',
+      onComplete: function () { var i = sparks.indexOf(s); if (i > -1) sparks.splice(i, 1); }
+    });
+  }
+
+  /* double-click: gravity flips for a beat, then the pit rains back down */
+  function flipGravity() {
+    if (reduce || flipping) return;
+    flipping = true;
+    hideHint();
+    bodies.forEach(wake);
+    engine.gravity.y = -1;
+    gsap.delayedCall(1.9, function () {
+      engine.gravity.y = 1;
+      gsap.delayedCall(1.2, function () { flipping = false; });
+    });
+  }
+
+  /* per-tick: spring the grabbed ball + cursor force field */
+  Matter.Events.on(engine, 'beforeUpdate', function () {
+    if (grabbed) {
+      wake(grabbed);
+      Matter.Body.setVelocity(grabbed, {
+        x: (pointer.x - grabbed.position.x) * 0.22,
+        y: (pointer.y - grabbed.position.y) * 0.22
+      });
+    } else if (pointer.active && !reduce) {
+      var R = FIELD_R * DPR;
+      for (var i = 0; i < bodies.length; i++) {
+        var b = bodies[i];
+        var dx = b.position.x - pointer.x;
+        var dy = b.position.y - pointer.y;
+        var d2 = dx * dx + dy * dy;
+        if (d2 > R * R || d2 < 0.0001) continue;
+        var d = Math.sqrt(d2);
+        var f = 1 - d / R;
+        wake(b);
+        var n = f * f * 2.4 * DPR;
+        Matter.Body.setVelocity(b, {
+          x: b.velocity.x + (dx / d) * n,
+          y: b.velocity.y + (dy / d) * n - n * 0.35
+        });
+      }
+    }
   });
 
   /* --------------------------------------------------------- impact fx */
@@ -271,67 +294,53 @@
     ev.pairs.forEach(function (pair) {
       var a = pair.bodyA, b = pair.bodyB;
       var impact = Math.hypot(a.velocity.x - b.velocity.x, a.velocity.y - b.velocity.y);
-      if (impact < 7 || sparks.length > 6) return;
+      if (impact < 9 || sparks.length > 6) return;
       var s = {
         x: (a.position.x + b.position.x) / 2,
         y: (a.position.y + b.position.y) / 2,
-        r: 4 * DPR, alpha: 0.4
+        r: 4 * DPR, alpha: 0.35
       };
       sparks.push(s);
-      gsap.to(s, { r: (18 + impact * 2) * DPR, duration: 0.5, ease: 'power2.out' });
+      gsap.to(s, { r: (16 + impact * 1.6) * DPR, duration: 0.45, ease: 'power2.out' });
       gsap.to(s, {
-        alpha: 0, duration: 0.5, ease: 'power1.in',
+        alpha: 0, duration: 0.45, ease: 'power1.in',
         onComplete: function () { var i = sparks.indexOf(s); if (i > -1) sparks.splice(i, 1); }
       });
     });
   });
 
   /* ------------------------------------------------------------- draw */
-  function drawBody(b) {
+  function drawBall(b) {
     var meta = b.plugin.meta;
     if (!meta || meta.scale <= 0.01) return;
+    var r = b.circleRadius * meta.scale;
 
-    ctx.save();
-    ctx.translate(b.position.x, b.position.y);
-    ctx.rotate(b.angle);
-    ctx.scale(meta.scale, meta.scale);
-    ctx.globalAlpha = 0.92;
-
-    if (meta.kind === 'ball') {
-      var r = b.circleRadius;
+    ctx.globalAlpha = 0.94;
+    ctx.beginPath();
+    ctx.arc(b.position.x, b.position.y, r, 0, Math.PI * 2);
+    if (meta.style === 'fill') {
+      ctx.fillStyle = fg;
+      ctx.fill();
+      /* little shine dot so the pit reads as balls, not dots */
       ctx.beginPath();
-      ctx.arc(0, 0, r, 0, Math.PI * 2);
-      if (meta.style === 'fill') { ctx.fillStyle = fg; ctx.fill(); }
-      else { ctx.lineWidth = 2 * DPR; ctx.strokeStyle = fg; ctx.stroke(); }
-      /* notch so spin reads */
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.lineTo(r * 0.8, 0);
-      ctx.lineWidth = 1.5 * DPR;
-      ctx.strokeStyle = meta.style === 'fill' ? bgColor : fg;
-      ctx.stroke();
+      ctx.arc(b.position.x - r * 0.34, b.position.y - r * 0.34, r * 0.24, 0, Math.PI * 2);
+      ctx.fillStyle = bgColor;
+      ctx.fill();
     } else {
-      var c = Math.cos(-b.angle), s = Math.sin(-b.angle);
-      var verts = b.vertices;
+      ctx.lineWidth = 2.5 * DPR;
+      ctx.strokeStyle = fg;
+      ctx.stroke();
       ctx.beginPath();
-      for (var i = 0; i < verts.length; i++) {
-        var dx = verts[i].x - b.position.x;
-        var dy = verts[i].y - b.position.y;
-        var lx = dx * c - dy * s;
-        var ly = dx * s + dy * c;
-        if (i === 0) ctx.moveTo(lx, ly); else ctx.lineTo(lx, ly);
-      }
-      ctx.closePath();
-      if (meta.style === 'fill') { ctx.fillStyle = fg; ctx.fill(); }
-      else { ctx.lineWidth = 2 * DPR; ctx.strokeStyle = fg; ctx.stroke(); }
+      ctx.arc(b.position.x, b.position.y, r * 0.32, 0, Math.PI * 2);
+      ctx.fillStyle = fg;
+      ctx.fill();
     }
-    ctx.restore();
   }
 
   function drawScene() {
     ctx.clearRect(0, 0, W, H);
 
-    /* shelf line + ticks */
+    /* ledge line + ticks */
     ctx.globalAlpha = 0.35;
     ctx.strokeStyle = fg;
     ctx.lineWidth = 2 * DPR;
@@ -339,7 +348,7 @@
     ctx.moveTo(wallL, shelfY);
     ctx.lineTo(wallR, shelfY);
     ctx.stroke();
-    ctx.globalAlpha = 0.3;
+    ctx.globalAlpha = 0.25;
     ctx.lineWidth = 1.5 * DPR;
     for (var x = wallL; x < wallR; x += 64 * DPR) {
       ctx.beginPath();
@@ -348,7 +357,7 @@
       ctx.stroke();
     }
 
-    /* impact sparks */
+    /* impact / blast rings */
     sparks.forEach(function (sp) {
       ctx.globalAlpha = sp.alpha;
       ctx.beginPath();
@@ -371,7 +380,7 @@
       ctx.setLineDash([]);
     }
 
-    bodies.forEach(drawBody);
+    bodies.forEach(drawBall);
     ctx.globalAlpha = 1;
   }
 
@@ -391,11 +400,11 @@
     Matter.Runner.run(runner, engine);
     gsap.ticker.add(frame);
   } else {
-    for (var i = 0; i < 12; i++) {
-      makeBody(wallL + 40 * DPR + Math.random() * (wallR - wallL - 80 * DPR),
-        shelfY - 30 * DPR - Math.random() * 220 * DPR);
+    for (var i = 0; i < 30; i++) {
+      makeBall(wallL + 20 * DPR + Math.random() * (wallR - wallL - 40 * DPR),
+        shelfY - 10 * DPR - Math.random() * 160 * DPR);
     }
-    for (var k = 0; k < 240; k++) Matter.Engine.update(engine, 1000 / 60);
+    for (var k = 0; k < 300; k++) Matter.Engine.update(engine, 1000 / 60);
     drawScene();
   }
 
@@ -426,18 +435,17 @@
   function resize() {
     var r = hero.getBoundingClientRect();
     W = canvas.width = Math.max(1, Math.round(r.width * DPR));
-    H = canvas.height = Math.max(1, Math.round(r.height * DPR));
+    H = canvas.height = Math.round(r.height * DPR);
     canvas.style.width = r.width + 'px';
     canvas.style.height = r.height + 'px';
     buildStatic();
   }
 
-  /* ambient rain: every so often a new shape drops in by itself */
+  /* ambient rain: every so often a stray ball drops in */
   function ambient() {
-    gsap.delayedCall(6 + Math.random() * 6, function () {
-      if (inView && !grabbed && bodies.length < 22) {
-        makeBody(wallL + 30 * DPR + Math.random() * (wallR - wallL - 60 * DPR),
-          -40 * DPR);
+    gsap.delayedCall(6 + Math.random() * 7, function () {
+      if (inView && !grabbed && bodies.length < 58) {
+        makeBall(wallL + 30 * DPR + Math.random() * (wallR - wallL - 60 * DPR), -30 * DPR);
       }
       ambient();
     });
@@ -445,13 +453,14 @@
 
   /* --------------------------------------------------------------- go */
   resize();
-  if (!reduce) { seedPile(); ambient(); }
+  if (!reduce) { seedPit(); ambient(); }
 
   /* tiny debug hook */
   window.__phys = {
     count: function () { return bodies.length; },
     positions: function () {
       return bodies.map(function (b) { return { x: b.position.x / DPR, y: b.position.y / DPR }; });
-    }
+    },
+    gravity: function () { return engine.gravity.y; }
   };
 })();
