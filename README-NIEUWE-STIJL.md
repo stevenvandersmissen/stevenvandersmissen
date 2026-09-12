@@ -149,6 +149,15 @@ geen externe libs meer nodig — gsap/matter zijn verwijderd).
   bij `prefers-reduced-motion` één statisch frame
 - Hint `[ move = warp · click = ripple ]` (bg-pill) fade na eerste click
 
+## Wave 8 — portrait: kleiner + transparant bg-kleur masker
+
+- `.portrait { max-width: 300px }` op alle formaten (was 380px; de oude
+  mobile-override van 340px is verwijderd)
+- `.portrait::after`: transparant masker in `var(--bg)` (opacity 0.45) zodat
+  de foto als duotone in het thema smelt; kleurt live mee met elke theme
+- Hover lift het masker naar opacity 0.15 en onthult de foto (0.5s ease);
+  badge zit met `z-index: 2` boven het masker
+
 ## Publiceren
 
 De map is gewoon statisch (GitHub Pages-vriendelijk). Twee opties:

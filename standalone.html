@@ -374,7 +374,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 .portrait {
   position: relative;
-  max-width: 380px;              /* keep the portrait small on big screens */
+  max-width: 300px;              /* keep the portrait small on big screens */
   border-radius: var(--radius);
   overflow: hidden;
   background: var(--fg-10);
@@ -390,8 +390,24 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 .portrait:hover img { transform: scale(1.05); }
 
+/* transparent mask in the theme background colour, so the photo melts
+   into the palette; hover lifts the mask to reveal the picture */
+.portrait::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--bg);
+  opacity: 0.45;
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease);
+}
+
+.portrait:hover::after { opacity: 0.15; }
+
 .portrait__badge {
   position: absolute;
+  z-index: 2;
   left: 0.9rem;
   bottom: 0.9rem;
   padding: 0.4rem 0.75rem;
@@ -1098,8 +1114,6 @@ html.vt-circle::view-transition-new(root) {
   .work-grid { grid-template-columns: minmax(0, 1fr); gap: 2.25rem; }
 
   .work-grid:hover .work-card:not(:hover) { opacity: 1; }
-
-  .portrait { max-width: 340px; }
 
   .hero__head { flex-direction: column; gap: 1.75rem; }
   .nav { text-align: left; }
