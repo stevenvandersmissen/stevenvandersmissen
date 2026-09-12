@@ -151,6 +151,7 @@
     if (!silent) {
       try { localStorage.setItem('sv-theme', theme.id); } catch (e) {}
     }
+    window.dispatchEvent(new CustomEvent('themechange', { detail: { id: theme.id } }));
   }
 
   function nextTheme() {
@@ -384,4 +385,123 @@
   /* ------------------------------------------------------- 12. year stamp */
   var y = document.querySelector('[data-year]');
   if (y) y.textContent = new Date().getFullYear();
+
+  /* ============================ wave 2 — extra eye-catchers ============ */
+
+  /* release intro-filled animations so inline transforms work afterwards */
+  document.querySelectorAll('[data-intro]').forEach(function (el) {
+    el.addEventListener('animationend', function () { el.style.animation = 'none'; }, { once: true });
+  });
+
+  /* ----------------------------------------- 13. scramble-decode labels */
+  var GLYPHS = '!<>-_\\/[]{}=+*^?#01';
+
+  function scrambleEl(el) {
+    if (el.dataset.scrambled || reduceMotion) return;
+    el.dataset.scrambled = '1';
+
+    var final = el.textContent;
+    var queue = final.split('').map(function (ch, i) {
+      return {
+        ch: ch,
+        start: Math.floor(i * 1.4 + Math.random() * 5),
+        end: Math.floor(i * 1.4 + 9 + Math.random() * 12)
+      };
+    });
+    var frame = 0;
+
+    (function tick() {
+      var out = '';
+      var done = 0;
+      queue.forEach(function (q) {
+        if (q.ch === ' ') { out += ' '; done++; return; }
+        if (frame >= q.end) { out += q.ch; done++; }
+        else if (frame >= q.start) { out += GLYPHS[Math.floor(Math.random() * GLYPHS.length)]; }
+        else { out += GLYPHS[Math.floor(Math.random() * GLYPHS.length)]; }
+      });
+      el.textContent = out;
+      frame++;
+      if (done < queue.length) requestAnimationFrame(tick);
+      else el.textContent = final;
+    })();
+  }
+
+  var scrambleEls = document.querySelectorAll('[data-scramble]');
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    var sio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        scrambleEl(e.target);
+        sio.unobserve(e.target);
+      });
+    }, { threshold: 0.6 });
+    scrambleEls.forEach(function (el) { sio.observe(el); });
+  }
+
+  /* ------------------------------------------------------- 14. 3d tilt */
+  if (finePointer && !reduceMotion) {
+    document.querySelectorAll('[data-tilt]').forEach(function (el) {
+      var MAX = 5;
+      el.addEventListener('pointermove', function (e) {
+        var r = el.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        el.style.setProperty('--ry', (px * MAX * 2).toFixed(2) + 'deg');
+        el.style.setProperty('--rx', (-py * MAX * 2).toFixed(2) + 'deg');
+      });
+      el.addEventListener('pointerleave', function () {
+        el.style.setProperty('--ry', '0deg');
+        el.style.setProperty('--rx', '0deg');
+      });
+    });
+  }
+
+  /* --------------------------------------------------- 15. count-up nums */
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute('data-countup')) || 0;
+    if (reduceMotion) { el.textContent = String(target); return; }
+    var dur = 1500, t0 = null;
+    function step(ts) {
+      if (t0 === null) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = String(Math.round(target * eased));
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  var countEls = document.querySelectorAll('[data-countup]');
+  if ('IntersectionObserver' in window) {
+    var cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        countUp(e.target);
+        cio.unobserve(e.target);
+      });
+    }, { threshold: 0.6 });
+    countEls.forEach(function (el) { cio.observe(el); });
+  } else {
+    countEls.forEach(countUp);
+  }
+
+  /* --------------------------------------- 16. hero scroll-away parallax */
+  var heroBottom = document.querySelector('.hero__bottom');
+  var hpTick = false;
+
+  function heroParallax() {
+    if (!heroBottom) return;
+    var vh = window.innerHeight;
+    var sy = window.scrollY;
+    if (sy > vh) return;
+    var p = sy / vh;
+    heroBottom.style.opacity = String(Math.max(1 - p * 1.25, 0));
+    heroBottom.style.transform = 'translate3d(0,' + (sy * 0.22).toFixed(1) + 'px,0)';
+  }
+
+  window.addEventListener('scroll', function () {
+    if (hpTick) return;
+    hpTick = true;
+    requestAnimationFrame(function () { heroParallax(); hpTick = false; });
+  }, { passive: true });
 })();

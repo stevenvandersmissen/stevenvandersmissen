@@ -62,18 +62,19 @@
       </a>
 
       <nav class="nav" aria-label="Main" data-intro style="--d:.15s">
-        <p class="label">[ NAV ]</p>
+        <p class="label" data-scramble>[ NAV ]</p>
         <ul class="nav__list">
           <li><a href="#about">about</a></li>
           <li><a href="#work">work</a></li>
           <li><a href="#resume">resume</a></li>
+          <li><a href="#play">play</a></li>
           <li><a href="#contact">contact</a></li>
         </ul>
       </nav>
     </header>
 
     <div class="hero__bottom" data-intro style="--d:.3s">
-      <p class="label">[ ABOUT ]</p>
+      <p class="label" data-scramble>[ ABOUT ]</p>
       <h1 class="hero__title" data-split data-parallax>
         steven vandersmissen is a crossmedia teacher building lessons, tools and small digital things for
         <em>creativity, culture and the classroom.</em>
@@ -108,13 +109,13 @@
     <!-- ============================================================ ABOUT -->
     <section class="section" id="about">
       <div class="section__head" data-reveal>
-        <p class="label">[ ABOUT ]</p>
+        <p class="label" data-scramble>[ ABOUT ]</p>
         <h2 class="section__title" data-split>forever student, full-time teacher.</h2>
         <p class="section__note">19 years at TSM Mechelen, and still learning something new every week.</p>
       </div>
 
       <div class="about__grid">
-        <figure class="portrait" data-reveal="clip">
+        <figure class="portrait" data-reveal="clip" data-tilt>
           <img src="images/works/thumbs/me.webp" alt="Portrait of Steven Vandersmissen" width="900" height="900" />
           <figcaption class="portrait__badge"><span class="pulse"></span> mechelen, be</figcaption>
         </figure>
@@ -147,6 +148,13 @@
               <span>see the work</span><span class="arw" aria-hidden="true">↘</span>
             </a>
           </div>
+
+          <div class="stats stagger" data-reveal>
+            <div class="stat"><span class="stat__num" data-countup="19">0</span><span class="stat__label">[ years teaching ]</span></div>
+            <div class="stat"><span class="stat__num" data-countup="11">0</span><span class="stat__label">[ projects here ]</span></div>
+            <div class="stat"><span class="stat__num" data-countup="5">0</span><span class="stat__label">[ colour themes ]</span></div>
+            <div class="stat"><span class="stat__num">∞</span><span class="stat__label">[ curiosity ]</span></div>
+          </div>
         </div>
       </div>
     </section>
@@ -154,7 +162,7 @@
     <!-- ============================================================= WORK -->
     <section class="section" id="work">
       <div class="section__head" data-reveal>
-        <p class="label">[ WORK ]</p>
+        <p class="label" data-scramble>[ WORK ]</p>
         <h2 class="section__title" data-split>selected projects &amp; teaching material.</h2>
         <p class="section__note"><span data-count>11</span> items — websites, animation exercises and course material.</p>
       </div>
@@ -170,7 +178,7 @@
 
         <a class="work-card" data-cat="web" href="http://www.jorenvanutterbeeck.be/" target="_blank"
           rel="noopener" data-tip="view site" data-reveal>
-          <div class="work-card__media">
+          <div class="work-card__media" data-tilt>
             <img src="images/works/thumbs/joren.webp" alt="Joren Van Utterbeeck photography website" loading="lazy" width="900" height="563" />
             <span class="work-card__year">web</span>
           </div>
@@ -183,7 +191,7 @@
 
         <a class="work-card" data-cat="web" href="https://romanyears.github.io/mecuna/" target="_blank"
           rel="noopener" data-tip="view site" data-reveal style="--d:.06s">
-          <div class="work-card__media">
+          <div class="work-card__media" data-tilt>
             <img src="images/works/thumbs/mecuna.webp" alt="Mecuna class project website" loading="lazy" width="900" height="563" />
             <span class="work-card__year">web</span>
           </div>
@@ -196,7 +204,7 @@
 
         <a class="work-card" data-cat="web" href="https://romanyears.github.io/truckalicious.github.io/" target="_blank"
           rel="noopener" data-tip="view site" data-reveal style="--d:.12s">
-          <div class="work-card__media">
+          <div class="work-card__media" data-tilt>
             <img src="images/works/thumbs/truck.webp" alt="Truckalicious class project website" loading="lazy" width="900" height="563" />
             <span class="work-card__year">web</span>
           </div>
@@ -209,7 +217,7 @@
 
         <a class="work-card" data-cat="web" href="https://romanyears.github.io/belleza.github.io/" target="_blank"
           rel="noopener" data-tip="view site" data-reveal style="--d:.18s">
-          <div class="work-card__media">
+          <div class="work-card__media" data-tilt>
             <img src="images/works/thumbs/belezza.webp" alt="Belleza class exercise website" loading="lazy" width="900" height="563" />
             <span class="work-card__year">web</span>
           </div>
@@ -222,7 +230,7 @@
 
         <a class="work-card" data-cat="animation" href="images/works/jimmy.webp" data-lightbox="images/works/jimmy.webp"
           data-title="Jimmy — 2D animation" data-tip="play animation" data-reveal>
-          <div class="work-card__media">
+          <div class="work-card__media" data-tilt>
             <img src="images/works/thumbs/jimmy.webp" alt="Jimmy 2D animation still" loading="lazy" width="900" height="563" />
             <span class="work-card__year">2d</span>
           </div>
@@ -235,7 +243,7 @@
 
         <a class="work-card" data-cat="animation" href="images/works/lady.gif" data-lightbox="images/works/lady.gif"
           data-title="Floral loop — 2D animation" data-tip="play animation" data-reveal style="--d:.06s">
-          <div class="work-card__media">
+          <div class="work-card__media" data-tilt>
             <img src="images/works/thumbs/lady.webp" alt="Floral animation still" loading="lazy" width="900" height="563" />
             <span class="work-card__year">2d</span>
           </div>
@@ -248,7 +256,7 @@
 
         <a class="work-card" data-cat="animation" href="images/works/morph.webp" data-lightbox="images/works/morph.webp"
           data-title="Morphing exercise" data-tip="play animation" data-reveal style="--d:.12s">
-          <div class="work-card__media">
+          <div class="work-card__media" data-tilt>
             <img src="images/works/thumbs/morph.webp" alt="Morphing exercise still" loading="lazy" width="900" height="563" />
             <span class="work-card__year">2d</span>
           </div>
@@ -261,7 +269,7 @@
 
         <a class="work-card" data-cat="teaching" href="images/works/CursusAdobeXD.pdf" target="_blank" rel="noopener"
           data-tip="open pdf" data-reveal style="--d:.18s">
-          <div class="work-card__media">
+          <div class="work-card__media" data-tilt>
             <img src="images/works/thumbs/CursusAdobeXD.webp" alt="Adobe XD starter course cover" loading="lazy" width="900" height="563" />
             <span class="work-card__year">teaching</span>
           </div>
@@ -274,7 +282,7 @@
 
         <a class="work-card" data-cat="teaching" href="https://vimeo.com/vandersmissen" target="_blank" rel="noopener"
           data-tip="watch on vimeo" data-reveal>
-          <div class="work-card__media">
+          <div class="work-card__media" data-tilt>
             <img src="images/works/thumbs/vids.webp" alt="Video tutorials on Vimeo" loading="lazy" width="900" height="563" />
             <span class="work-card__year">teaching</span>
           </div>
@@ -287,7 +295,7 @@
 
         <a class="work-card" data-cat="teaching" href="https://express.adobe.com/page/BWDSbJrJ1V5WS/" target="_blank"
           rel="noopener" data-tip="open cheat sheet" data-reveal style="--d:.06s">
-          <div class="work-card__media">
+          <div class="work-card__media" data-tilt>
             <img src="images/works/thumbs/responsive.webp" alt="Responsive design cheat sheet" loading="lazy" width="900" height="563" />
             <span class="work-card__year">teaching</span>
           </div>
@@ -300,7 +308,7 @@
 
         <a class="work-card" data-cat="teaching" href="https://express.adobe.com/page/Dg3LW89YjLDDg/" target="_blank"
           rel="noopener" data-tip="open assignment" data-reveal style="--d:.12s">
-          <div class="work-card__media">
+          <div class="work-card__media" data-tilt>
             <img src="images/works/thumbs/music.webp" alt="Love for music assignment" loading="lazy" width="900" height="563" />
             <span class="work-card__year">teaching</span>
           </div>
@@ -317,7 +325,7 @@
     <!-- =========================================================== RESUME -->
     <section class="section" id="resume">
       <div class="section__head" data-reveal>
-        <p class="label">[ RESUME ]</p>
+        <p class="label" data-scramble>[ RESUME ]</p>
         <h2 class="section__title" data-split>experience &amp; education.</h2>
         <p class="section__note">Full CV available as PDF.</p>
       </div>
@@ -375,7 +383,7 @@
     <!-- =========================================================== SKILLS -->
     <section class="section" id="skills">
       <div class="section__head" data-reveal>
-        <p class="label">[ SKILLS ]</p>
+        <p class="label" data-scramble>[ SKILLS ]</p>
         <h2 class="section__title" data-split>the toolbox.</h2>
         <p class="section__note">Filled dot = core skill, outline = familiar with it.</p>
       </div>
@@ -437,10 +445,54 @@
       </div>
     </section>
 
+    <!-- ============================================================= PLAY -->
+    <section class="section" id="play">
+      <div class="section__head" data-reveal>
+        <p class="label" data-scramble>[ PLAY ]</p>
+        <h2 class="section__title" data-split>daedalus dash — a tiny phaser game.</h2>
+        <p class="section__note">Space or tap to jump, double jump allowed. Grab diamonds, dodge blocks, beat your best.</p>
+      </div>
+
+      <div class="game" data-reveal>
+        <div class="game__frame" id="game-mount">
+          <div class="game__scan" aria-hidden="true"></div>
+
+          <div class="game__hud mono" id="game-hud" hidden>
+            <span id="game-score">[ score: 0 ]</span>
+            <span id="game-speed">[ speed: 1.0× ]</span>
+          </div>
+
+          <div class="game__overlay" id="game-overlay">
+            <p class="label" data-scramble>[ DAEDALUS DASH ]</p>
+            <h3 class="game__title">run. jump. repeat.</h3>
+            <p class="game__hint mono">[ space / tap ] = jump · double jump allowed</p>
+            <p class="game__best mono" id="game-best">[ best: 0 ]</p>
+            <button class="btn" id="game-start" type="button" data-magnetic="0.18">
+              <span>start game</span><span class="arw" aria-hidden="true">▶</span>
+            </button>
+          </div>
+        </div>
+        <p class="game__caption mono dim">built with phaser 3 — no sprites, everything is drawn in code</p>
+      </div>
+    </section>
+
+    <div class="ticker ticker--rev" aria-hidden="true">
+      <div class="ticker__track">
+        <div class="ticker__group">
+          <span>let's make something</span><i></i><span>daedalus designs</span><i></i><span>mechelen</span><i></i>
+          <span>est. 2007</span><i></i><span>forever student</span><i></i><span>daedalus dash</span><i></i>
+        </div>
+        <div class="ticker__group">
+          <span>let's make something</span><i></i><span>daedalus designs</span><i></i><span>mechelen</span><i></i>
+          <span>est. 2007</span><i></i><span>forever student</span><i></i><span>daedalus dash</span><i></i>
+        </div>
+      </div>
+    </div>
+
     <!-- ========================================================== CONTACT -->
     <section class="section" id="contact">
       <div class="section__head" data-reveal>
-        <p class="label">[ CONTACT ]</p>
+        <p class="label" data-scramble>[ CONTACT ]</p>
         <h2 class="section__title" data-split>let's make something.</h2>
         <p class="section__note">Freelance projects, workshops, guest lessons or just a hello.</p>
       </div>
@@ -505,6 +557,8 @@
   </div>
 
   <script src="js/main.js" defer></script>
+  <script src="js/phaser.min.js" defer></script>
+  <script src="js/game.js" defer></script>
 </body>
 
 </html>

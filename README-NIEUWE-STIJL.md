@@ -41,6 +41,30 @@ De keuze wordt onthouden in `localStorage` en de wissel gebeurt met een
 11. **Magnetische knoppen** — CV/knoppen/theme bewegen licht mee met de cursor.
 12. **Thema-wissel** — circulaire view-transition vanuit de knop.
 
+## Wave 2 — extra eye-catchers + mini-game
+
+### Daedalus Dash (`[ PLAY ]`-sectie, `js/game.js` + `js/phaser.min.js`)
+Een eigen arcade-gamepje (endless runner) volledig **in code getekend** — geen
+sprites: speler, blokken, diamanten en de parallax-doolhoven op de achtergrond
+worden met Phaser-graphics gegenereerd in de kleuren van het actieve thema.
+
+- Besturing: **spatie / pijl omhoog / tap** = springen, **double jump** toegestaan
+- Diamanten pakken (+25), blokken ontwijken, snelheid loopt op tot 2.4×
+- Particles, squash & stretch, screenshake, crash-flash, "+25"-popups
+- High score in `localStorage`; game-over-scherm met retry
+- Pauzeert automatisch wanneer hij uit beeld scrolt of de tab verborgen is
+- Kleurt live mee bij thema-wissel (`themechange`-event)
+- Geen Phaser beschikbaar (offline)? Net fallback-bericht in de overlay
+
+### Extra animaties bovenop wave 1
+13. **Scramble-decode** — alle `[ LABELS ]` decoden karakter-voor-karakter bij reveal
+14. **3D-tilt** — projectkaarten en portrait kantelen subtiel mee met de muis
+15. **Count-up statistieken** — 19 / 11 / 5 tellen op bij de about-sectie
+16. **Hero scroll-parallax** — de hero-tekst fades en schuift weg bij scrollen
+17. **Glitch-hover** — RGB-split flicker op de grote hero-titel (knipoog naar het oude glitche-template)
+18. **Shine-sweep** — lichtflits over kaartbeelden bij hover
+19. **Omgekeerde ticker** — tweede marquee-band die de andere richting op draait
+
 ## Publiceren
 
 De map is gewoon statisch (GitHub Pages-vriendelijk). Twee opties:

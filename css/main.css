@@ -1087,3 +1087,166 @@ html.vt-circle::view-transition-new(root) {
     clip-path: none !important;
   }
 }
+
+/* ==========================================================================
+   Wave 2 — extra eye-catchers + game
+   ========================================================================== */
+
+/* ------------------------------------------------------- stats count-up */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: clamp(2rem, 1.5rem + 2vw, 3rem);
+  padding-top: clamp(1.25rem, 1rem + 1vw, 2rem);
+  border-top: 1px solid var(--fg-30);
+}
+
+.stat { display: flex; flex-direction: column; gap: 0.15rem; }
+
+.stat__num {
+  font-size: clamp(2.2rem, 1.4rem + 3.4vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat__label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--fg-60);
+}
+
+@media (max-width: 700px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ------------------------------------------------- glitch hover (hero) */
+@media (hover: hover) and (pointer: fine) {
+  .hero__title { cursor: default; }
+  .hero__title:hover { animation: glitch 0.5s steps(3, end) 1; }
+}
+
+@keyframes glitch {
+  0%   { text-shadow: none; }
+  15%  { text-shadow: -4px 0 var(--fg-60), 4px 0 var(--fg-20); }
+  30%  { text-shadow: 4px 0 var(--fg-60), -4px 0 var(--fg-20); transform: translate(2px, -1px); }
+  45%  { text-shadow: -3px 0 var(--fg-20), 3px 0 var(--fg-60); transform: translate(-2px, 1px); }
+  60%  { text-shadow: 2px 0 var(--fg-60), -2px 0 var(--fg-20); transform: translate(1px, 0); }
+  100% { text-shadow: none; transform: none; }
+}
+
+/* --------------------------------------------- shine sweep on card media */
+.work-card__media::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background: linear-gradient(105deg,
+    transparent 42%,
+    color-mix(in oklab, var(--bg) 60%, transparent) 50%,
+    transparent 58%);
+  transform: translateX(-130%) rotate(0.001deg);
+  transition: transform 1s var(--ease);
+}
+
+.work-card:hover .work-card__media::after { transform: translateX(130%) rotate(0.001deg); }
+
+/* 3d tilt (JS-driven) */
+[data-tilt] {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.5s var(--ease);
+  will-change: transform;
+}
+
+/* --------------------------------------------------- reversed ticker */
+.ticker--rev {
+  margin-top: clamp(3.5rem, 6vw, 7rem);
+  border-top: 0;
+}
+
+.ticker--rev .ticker__track { animation-direction: reverse; animation-duration: 30s; }
+
+/* ------------------------------------------------------------ the game */
+.game { display: flex; flex-direction: column; gap: 0.8rem; }
+
+.game__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 6;
+  min-height: 300px;
+  max-height: 560px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: color-mix(in oklab, var(--fg) 6%, transparent);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 0.16);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.game__frame canvas { display: block; width: 100% !important; height: 100% !important; }
+
+/* crt scanlines */
+.game__scan {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg,
+    transparent 0 3px,
+    color-mix(in oklab, var(--fg) 6%, transparent) 3px 4px);
+  opacity: 0.55;
+}
+
+.game__hud {
+  position: absolute;
+  top: 0.9rem;
+  left: 1.1rem;
+  right: 1.1rem;
+  z-index: 4;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+.game__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 1.5rem;
+  text-align: center;
+  background: color-mix(in oklab, var(--bg) 72%, transparent);
+  backdrop-filter: blur(3px);
+  transition: opacity 0.45s var(--ease), visibility 0.45s;
+}
+
+.game__overlay.is-off { opacity: 0; visibility: hidden; }
+
+.game__title {
+  font-size: var(--t-h2);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.game__hint,
+.game__best { font-size: 0.8rem; letter-spacing: 0.04em; color: var(--fg-60); }
+
+.game__caption { font-size: 0.74rem; letter-spacing: 0.04em; }
+
+/* floating "+5" popups rendered by phaser use page font via canvas text */
+
+@media (max-width: 700px) {
+  .game__frame { aspect-ratio: 4 / 3; }
+}
