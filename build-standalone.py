@@ -14,6 +14,7 @@ html = (ROOT / 'index.html').read_text(encoding='utf-8')
 
 # 1) stylesheet -> <style>
 css = (ROOT / 'css' / 'main.css').read_text(encoding='utf-8')
+html = re.sub(r'<link rel="stylesheet" href="css/main\.css[^"]*" />', lambda m: '<style>\n' + css + '\n</style>', html, count=1)
 html = html.replace('<link rel="stylesheet" href="css/main.css" />',
                     '<style>\n' + css + '\n</style>')
 
@@ -38,7 +39,7 @@ html = re.sub(r'src="(images/[^"]+\.webp)"', inline_img, html)
 
 # 4) scripts -> inline, same order, end of body so DOM exists
 def inline_script(m):
-    src = m.group(1)
+    src = m.group(1).split('?')[0]
     path = ROOT / src
     if not path.exists():
         return m.group(0)
@@ -46,7 +47,7 @@ def inline_script(m):
     js = js.replace('</script', '<\\/script')   # safety, never present today
     return '<script>\n' + js + '\n</script>'
 
-html = re.sub(r'<script src="(js/[^"]+)" defer></script>', inline_script, html)
+html = re.sub(r'<script src="(js/[^"?]+)(?:\?[^"]*)?" defer></script>', inline_script, html)
 
 out = ROOT / 'standalone.html'
 out.write_text(html, encoding='utf-8')

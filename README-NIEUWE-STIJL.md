@@ -158,6 +158,17 @@ geen externe libs meer nodig — gsap/matter zijn verwijderd).
 - Hover lift het masker naar opacity 0.15 en onthult de foto (0.5s ease);
   badge zit met `z-index: 2` boven het masker
 
+## Wave 9 — mask op alle afbeeldingen, portrait 260px, adres verwijderd
+
+- Portrait nog kleiner: `max-width: 260px`
+- Transparant `var(--bg)`-masker (opacity 0.45, hover lift naar 0.12) nu ook op
+  **alle work-thumbnails** via `.work-card__media::before` (de bestaande
+  shine-sweep blijft liggen op `::after`, z-index 2; year-badge z-index 3)
+- Contact: straatadres vervangen door `achter de kazerne, Mechelen`
+  (geen maps-link meer)
+- Cache-busting: `css/main.css?v=8` en `js/*.js?v=8` in index.html, zodat
+  browsers de nieuwe styles zeker oppikken
+
 ## Publiceren
 
 De map is gewoon statisch (GitHub Pages-vriendelijk). Twee opties:
