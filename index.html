@@ -1,141 +1,510 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="green">
 
 <head>
+  <meta charset="utf-8" />
+  <title>Steven Vandersmissen — Crossmedia Teacher, Designer & Developer</title>
+  <meta name="description"
+    content="Steven Vandersmissen is a crossmedia teacher at TSM Mechelen — web design, 2D & interactive animation, UI/UX, 3D, game development, coding and AI." />
+  <meta name="keywords" content="steven vandersmissen, crossmedia teacher, web design, ui ux, 2d animation, game development, mechelen, daedalusdesigns" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#00ff11" />
 
-	<!-- Basic -->
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Steven Vandersmissen - CV/Resume</title>
-	<meta name="description" content="steven vandersmissen resume cv">
-	<meta name="keywords" content="steven vandersmissen resume cv teacher graphic design programming 2d animation">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Steven Vandersmissen — Crossmedia Teacher" />
+  <meta property="og:description" content="Web design, 2D & interactive animation, UI/UX, 3D, game development, coding and AI. Based in Mechelen." />
+  <meta property="og:image" content="images/opengraph.png" />
+  <meta name="twitter:card" content="summary_large_image" />
 
-	<!-- Mobile Specific Metas -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
 
-	<!-- Load Fonts -->
-	<link
-		href='https://fonts.googleapis.com/css?family=Roboto+Mono:400,100,300italic,300,100italic,400italic,500,500italic,700,700italic&amp;subset=latin,cyrillic'
-		rel='stylesheet'>
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/main.css" />
 
-	<!-- CSS -->
-	<link rel="stylesheet" href="css/basic.css" />
-	<link rel="stylesheet" href="css/layout.css" />
-	<link rel="stylesheet" href="css/ionicons.css" />
-	<link rel="stylesheet" href="css/magnific-popup.css" />
-	<link rel="stylesheet" href="css/animate.css" />
+  <!-- Favicons -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/favicons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicons/favicon-16x16.png" />
+  <link rel="manifest" href="images/favicons/site.webmanifest" />
 
-
-	<link rel="stylesheet" href="css/template-colors/red.css" />
-
-
-	<!--[if lt IE 9]>
-	<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
-	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-
-	<!-- Favicons -->
-
-	<link rel="apple-touch-icon" sizes="180x180" href="images/favicons/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="images/favicons/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="images/favicons/favicon-16x16.png">
-	<link rel="manifest" href="images/favicons/site.webmanifest">
-	<link rel="mask-icon" href="images/favicons/safari-pinned-tab.svg" color="#5bbad5">
-	<meta name="msapplication-TileColor" content="#da532c">
-	<meta name="theme-color" content="#ffffff">
-
+  <!-- No-flash: theme + js flag before first paint -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('js');
+      try {
+        var t = localStorage.getItem('sv-theme');
+        if (t) d.setAttribute('data-theme', t);
+      } catch (e) { }
+    })();
+  </script>
 </head>
 
 <body>
 
-	<!-- Preloader -->
-	<div class="preloader">
-		<div class="centrize full-width">
-			<div class="vertical-center">
-				<div class="pre-inner">
-					<div class="load typing-load">
-						<p>loading...</p>
-					</div>
-					<span class="typed-load"></span>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="progress" aria-hidden="true"></div>
+  <div class="cursor-tip" aria-hidden="true"><span>view</span></div>
 
-	<!-- Container -->
-	<div class="container">
+  <!-- ============================================================== HERO -->
+  <section class="hero intro" id="top">
+    <header class="hero__head">
+      <a class="logo" href="#top" aria-label="Steven Vandersmissen — home" data-intro style="--d:.05s">
+        <svg class="logo__mark" viewBox="0 0 64 64" aria-hidden="true">
+          <path d="M6 6 H58 V58 H14 V14 H50 V50 H22 V22 H42 V42 H30" />
+        </svg>
+        <span class="logo__tag">daedalus designs / mechelen</span>
+      </a>
 
-		<!-- Header -->
-		<header>
-			<div class="head-top">
-				<a href="#" class="menu-btn"><span></span></a>
-				<div class="top-menu">
-					<ul>
-						<li><a href="resume.html" class="lnk">Resume</a></li>
-						<li><a href="portfolio.html" class="lnk">Portfolio</a></li>
-						<li><a href="contacts.html" class="btn">Contact</a></li>
-					</ul>
-				</div>
-			</div>
-		</header>
+      <nav class="nav" aria-label="Main" data-intro style="--d:.15s">
+        <p class="label">[ NAV ]</p>
+        <ul class="nav__list">
+          <li><a href="#about">about</a></li>
+          <li><a href="#work">work</a></li>
+          <li><a href="#resume">resume</a></li>
+          <li><a href="#contact">contact</a></li>
+        </ul>
+      </nav>
+    </header>
 
-		<!-- Wrapper -->
-		<div class="wrapper">
+    <div class="hero__bottom" data-intro style="--d:.3s">
+      <p class="label">[ ABOUT ]</p>
+      <h1 class="hero__title" data-split data-parallax>
+        steven vandersmissen is a crossmedia teacher building lessons, tools and small digital things for
+        <em>creativity, culture and the classroom.</em>
+      </h1>
 
-			<!-- Started -->
-			<div class="section started">
-				<div class="centrize full-width">
-					<div class="vertical-center">
-						<div class="started-content">
-							<div class="h-title glitch-effect" data-text="Steven Vandersmissen"><span>Steven
-									Vandersmissen</span></div>
-							<div class="h-subtitle typing-subtitle">
-								<p>Crossmedia Teacher...</p>
-								<p>Coding...</p>
-								<p>UI/UX Design...</p>
-								<p>Motion...</p>
-								<p>Game dev...</p>
-								<p>3D...</p>
-								<p>Digital Design...</p>
-								<p>Based in Mechelen...</p>
-							</div>
-							<span class="typed-subtitle"></span>
-						</div>
-					</div>
-				</div>
-			</div>
+      <div class="hero__meta">
+        <span class="label label--sm">[ 19 YEARS TEACHING ]</span>
+        <span class="label label--sm">[ TSM MECHELEN ]</span>
+        <span class="label label--sm">[ OPEN FOR PROJECTS ]</span>
+        <span class="scroll-hint"><span></span> scroll</span>
+      </div>
+    </div>
 
-		</div>
+    <div class="ticker" data-intro style="--d:.45s" aria-hidden="true">
+      <div class="ticker__track">
+        <div class="ticker__group">
+          <span>web design</span><i></i><span>ui/ux</span><i></i><span>2d animation</span><i></i>
+          <span>interactive animation</span><i></i><span>game development</span><i></i><span>3d design</span><i></i>
+          <span>coding</span><i></i><span>image editing</span><i></i><span>graphic design</span><i></i><span>ai</span><i></i>
+        </div>
+        <div class="ticker__group">
+          <span>web design</span><i></i><span>ui/ux</span><i></i><span>2d animation</span><i></i>
+          <span>interactive animation</span><i></i><span>game development</span><i></i><span>3d design</span><i></i>
+          <span>coding</span><i></i><span>image editing</span><i></i><span>graphic design</span><i></i><span>ai</span><i></i>
+        </div>
+      </div>
+    </div>
+  </section>
 
-		<!-- Footer -->
-		<footer>
-			<div class="soc">
-				<a target="_blank" href="https://vimeo.com/vandersmissen"><span class="ion ion-social-vimeo"></span></a>
-				<a target="_blank" href="https://www.facebook.com/steven.vandersmissen"><span class="ion ion-social-facebook"></span></a>
-				<a target="_blank" href="https://www.instagram.com/slowbouncer"><span class="ion ion-social-instagram-outline"></span></a>
-			</div>
-			<div class="copy">© 2022 DaedalusDesigns. All rights reserved.</div>
-			<div class="clr"></div>
-		</footer>
+  <main>
 
-		<!-- Lines -->
-		<div class="line top"></div>
-		<div class="line bottom"></div>
-		<div class="line left"></div>
-		<div class="line right"></div>
+    <!-- ============================================================ ABOUT -->
+    <section class="section" id="about">
+      <div class="section__head" data-reveal>
+        <p class="label">[ ABOUT ]</p>
+        <h2 class="section__title" data-split>forever student, full-time teacher.</h2>
+        <p class="section__note">19 years at TSM Mechelen, and still learning something new every week.</p>
+      </div>
 
-	</div>
+      <div class="about__grid">
+        <figure class="portrait" data-reveal="clip">
+          <img src="images/works/thumbs/me.webp" alt="Portrait of Steven Vandersmissen" width="900" height="900" />
+          <figcaption class="portrait__badge"><span class="pulse"></span> mechelen, be</figcaption>
+        </figure>
 
-	<!-- jQuery Scripts -->
-	<script src="js/jquery.min.js"></script>
-	<script src="js/jquery.validate.js"></script>
-	<script src="js/typed.js"></script>
-	<script src="js/magnific-popup.js"></script>
-	<script src="js/imagesloaded.pkgd.js"></script>
-	<script src="js/isotope.pkgd.js"></script>
+        <div class="about__body">
+          <p class="lead" data-reveal style="--d:.05s">
+            I've been teaching at TSM Mechelen for 19 years, covering web design, 2D and interactive animation,
+            UI/UX, 3D design, game development, coding, image editing, digital graphic design and AI.
+          </p>
+          <p data-reveal style="--d:.12s">
+            Outside of teaching I like to work on small graphic design and programming projects for family, friends
+            and colleagues. I see myself as a “forever student”, always exploring new skills through tutorials,
+            online courses and personal projects.
+          </p>
 
-	<!-- Main Scripts -->
-	<script src="js/glitche-scripts.js"></script>
+          <dl class="facts stagger" data-reveal>
+            <div><dt>Name</dt><dd>Steven Vandersmissen</dd></div>
+            <div><dt>Age</dt><dd>45</dd></div>
+            <div><dt>Job</dt><dd>Crossmedia teacher</dd></div>
+            <div><dt>Citizenship</dt><dd>Belgium</dd></div>
+            <div><dt>Residence</dt><dd>Mechelen</dd></div>
+            <div><dt>E-mail</dt><dd>daedalusdesigns@gmail.com</dd></div>
+          </dl>
 
+          <div class="btn-row" data-reveal style="--d:.1s">
+            <a class="btn" href="CV-stevenvandersmissen.pdf" download data-magnetic="0.18">
+              <span>download cv</span><span class="arw" aria-hidden="true">↓</span>
+            </a>
+            <a class="btn" href="#work" data-magnetic="0.18">
+              <span>see the work</span><span class="arw" aria-hidden="true">↘</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= WORK -->
+    <section class="section" id="work">
+      <div class="section__head" data-reveal>
+        <p class="label">[ WORK ]</p>
+        <h2 class="section__title" data-split>selected projects &amp; teaching material.</h2>
+        <p class="section__note"><span data-count>11</span> items — websites, animation exercises and course material.</p>
+      </div>
+
+      <div class="filters" role="group" aria-label="Filter work" data-reveal>
+        <button class="filter" type="button" data-filter="all" aria-pressed="true">[ all ]</button>
+        <button class="filter" type="button" data-filter="web" aria-pressed="false">[ web ]</button>
+        <button class="filter" type="button" data-filter="animation" aria-pressed="false">[ 2d animation ]</button>
+        <button class="filter" type="button" data-filter="teaching" aria-pressed="false">[ teaching ]</button>
+      </div>
+
+      <div class="work-grid">
+
+        <a class="work-card" data-cat="web" href="http://www.jorenvanutterbeeck.be/" target="_blank"
+          rel="noopener" data-tip="view site" data-reveal>
+          <div class="work-card__media">
+            <img src="images/works/thumbs/joren.webp" alt="Joren Van Utterbeeck photography website" loading="lazy" width="900" height="563" />
+            <span class="work-card__year">web</span>
+          </div>
+          <div class="work-card__meta">
+            <h3 class="work-card__name">Joren Van Utterbeeck</h3>
+            <p class="work-card__cat">portfolio website</p>
+          </div>
+          <p class="work-card__desc">Photography portfolio with full-bleed galleries and a quiet, image-first layout.</p>
+        </a>
+
+        <a class="work-card" data-cat="web" href="https://romanyears.github.io/mecuna/" target="_blank"
+          rel="noopener" data-tip="view site" data-reveal style="--d:.06s">
+          <div class="work-card__media">
+            <img src="images/works/thumbs/mecuna.webp" alt="Mecuna class project website" loading="lazy" width="900" height="563" />
+            <span class="work-card__year">web</span>
+          </div>
+          <div class="work-card__meta">
+            <h3 class="work-card__name">Mecuna</h3>
+            <p class="work-card__cat">class project</p>
+          </div>
+          <p class="work-card__desc">Student class project — concept, layout and front-end built together in the classroom.</p>
+        </a>
+
+        <a class="work-card" data-cat="web" href="https://romanyears.github.io/truckalicious.github.io/" target="_blank"
+          rel="noopener" data-tip="view site" data-reveal style="--d:.12s">
+          <div class="work-card__media">
+            <img src="images/works/thumbs/truck.webp" alt="Truckalicious class project website" loading="lazy" width="900" height="563" />
+            <span class="work-card__year">web</span>
+          </div>
+          <div class="work-card__meta">
+            <h3 class="work-card__name">Truckalicious</h3>
+            <p class="work-card__cat">class project</p>
+          </div>
+          <p class="work-card__desc">Playful food-truck site with animated hero artwork and a responsive menu.</p>
+        </a>
+
+        <a class="work-card" data-cat="web" href="https://romanyears.github.io/belleza.github.io/" target="_blank"
+          rel="noopener" data-tip="view site" data-reveal style="--d:.18s">
+          <div class="work-card__media">
+            <img src="images/works/thumbs/belezza.webp" alt="Belleza class exercise website" loading="lazy" width="900" height="563" />
+            <span class="work-card__year">web</span>
+          </div>
+          <div class="work-card__meta">
+            <h3 class="work-card__name">Belleza</h3>
+            <p class="work-card__cat">class exercise</p>
+          </div>
+          <p class="work-card__desc">Beauty-brand exercise site used to teach layout, typography and responsive grids.</p>
+        </a>
+
+        <a class="work-card" data-cat="animation" href="images/works/jimmy.webp" data-lightbox="images/works/jimmy.webp"
+          data-title="Jimmy — 2D animation" data-tip="play animation" data-reveal>
+          <div class="work-card__media">
+            <img src="images/works/thumbs/jimmy.webp" alt="Jimmy 2D animation still" loading="lazy" width="900" height="563" />
+            <span class="work-card__year">2d</span>
+          </div>
+          <div class="work-card__meta">
+            <h3 class="work-card__name">Jimmy</h3>
+            <p class="work-card__cat">2d animation</p>
+          </div>
+          <p class="work-card__desc">Character animation exercise — timing, squash &amp; stretch and clean-up.</p>
+        </a>
+
+        <a class="work-card" data-cat="animation" href="images/works/lady.gif" data-lightbox="images/works/lady.gif"
+          data-title="Floral loop — 2D animation" data-tip="play animation" data-reveal style="--d:.06s">
+          <div class="work-card__media">
+            <img src="images/works/thumbs/lady.webp" alt="Floral animation still" loading="lazy" width="900" height="563" />
+            <span class="work-card__year">2d</span>
+          </div>
+          <div class="work-card__meta">
+            <h3 class="work-card__name">Floral loop</h3>
+            <p class="work-card__cat">2d animation</p>
+          </div>
+          <p class="work-card__desc">Looping floral transformation study. Click to play the full animation.</p>
+        </a>
+
+        <a class="work-card" data-cat="animation" href="images/works/morph.webp" data-lightbox="images/works/morph.webp"
+          data-title="Morphing exercise" data-tip="play animation" data-reveal style="--d:.12s">
+          <div class="work-card__media">
+            <img src="images/works/thumbs/morph.webp" alt="Morphing exercise still" loading="lazy" width="900" height="563" />
+            <span class="work-card__year">2d</span>
+          </div>
+          <div class="work-card__meta">
+            <h3 class="work-card__name">Morphing</h3>
+            <p class="work-card__cat">2d animation</p>
+          </div>
+          <p class="work-card__desc">Shape-morphing exercise exploring in-betweening and easing curves.</p>
+        </a>
+
+        <a class="work-card" data-cat="teaching" href="images/works/CursusAdobeXD.pdf" target="_blank" rel="noopener"
+          data-tip="open pdf" data-reveal style="--d:.18s">
+          <div class="work-card__media">
+            <img src="images/works/thumbs/CursusAdobeXD.webp" alt="Adobe XD starter course cover" loading="lazy" width="900" height="563" />
+            <span class="work-card__year">teaching</span>
+          </div>
+          <div class="work-card__meta">
+            <h3 class="work-card__name">Adobe XD starter course</h3>
+            <p class="work-card__cat">course material</p>
+          </div>
+          <p class="work-card__desc">Step-by-step course reader written for first-year design students.</p>
+        </a>
+
+        <a class="work-card" data-cat="teaching" href="https://vimeo.com/vandersmissen" target="_blank" rel="noopener"
+          data-tip="watch on vimeo" data-reveal>
+          <div class="work-card__media">
+            <img src="images/works/thumbs/vids.webp" alt="Video tutorials on Vimeo" loading="lazy" width="900" height="563" />
+            <span class="work-card__year">teaching</span>
+          </div>
+          <div class="work-card__meta">
+            <h3 class="work-card__name">Video tutorials</h3>
+            <p class="work-card__cat">vimeo channel</p>
+          </div>
+          <p class="work-card__desc">A growing library of short screen-capture tutorials for my classes.</p>
+        </a>
+
+        <a class="work-card" data-cat="teaching" href="https://express.adobe.com/page/BWDSbJrJ1V5WS/" target="_blank"
+          rel="noopener" data-tip="open cheat sheet" data-reveal style="--d:.06s">
+          <div class="work-card__media">
+            <img src="images/works/thumbs/responsive.webp" alt="Responsive design cheat sheet" loading="lazy" width="900" height="563" />
+            <span class="work-card__year">teaching</span>
+          </div>
+          <div class="work-card__meta">
+            <h3 class="work-card__name">Responsive cheat sheet</h3>
+            <p class="work-card__cat">reference</p>
+          </div>
+          <p class="work-card__desc">One-page responsive design reference handed out in every web class.</p>
+        </a>
+
+        <a class="work-card" data-cat="teaching" href="https://express.adobe.com/page/Dg3LW89YjLDDg/" target="_blank"
+          rel="noopener" data-tip="open assignment" data-reveal style="--d:.12s">
+          <div class="work-card__media">
+            <img src="images/works/thumbs/music.webp" alt="Love for music assignment" loading="lazy" width="900" height="563" />
+            <span class="work-card__year">teaching</span>
+          </div>
+          <div class="work-card__meta">
+            <h3 class="work-card__name">Love for music</h3>
+            <p class="work-card__cat">assignment</p>
+          </div>
+          <p class="work-card__desc">Editorial layout assignment built around a music magazine spread.</p>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- =========================================================== RESUME -->
+    <section class="section" id="resume">
+      <div class="section__head" data-reveal>
+        <p class="label">[ RESUME ]</p>
+        <h2 class="section__title" data-split>experience &amp; education.</h2>
+        <p class="section__note">Full CV available as PDF.</p>
+      </div>
+
+      <div class="resume-cols">
+        <div>
+          <p class="label label--sm dim" style="padding-bottom:1rem">[ EXPERIENCE ]</p>
+          <div class="rows stagger" data-reveal>
+            <div class="row" style="--i:0">
+              <span class="row__date">2007 — 2026</span>
+              <span class="row__role">Crossmedia teacher</span>
+              <span class="row__org">@ TSM Mechelen</span>
+            </div>
+            <div class="row" style="--i:1">
+              <span class="row__date">2007 · 1 month</span>
+              <span class="row__role">Photoshop &amp; InDesign instructor</span>
+              <span class="row__org">@ SCVO Antwerpen</span>
+            </div>
+            <div class="row" style="--i:2">
+              <span class="row__date">2006 · 2 months</span>
+              <span class="row__role">Graphic design teacher</span>
+              <span class="row__org">@ Don Bosco Halle</span>
+            </div>
+            <div class="row" style="--i:3">
+              <span class="row__date">2006 · 2 months</span>
+              <span class="row__role">DTP &amp; quality control</span>
+              <span class="row__org">@ Yamagata</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="label label--sm dim" style="padding-bottom:1rem">[ EDUCATION ]</p>
+          <div class="rows stagger" data-reveal>
+            <div class="row" style="--i:0">
+              <span class="row__date">2006 — 2009</span>
+              <span class="row__role">Specifieke lerarenopleiding</span>
+              <span class="row__org">@ HoGent</span>
+            </div>
+            <div class="row" style="--i:1">
+              <span class="row__date">2002 — 2005</span>
+              <span class="row__role">Bachelor grafische en digitale media</span>
+              <span class="row__org">@ Hogeschool Antwerpen / AP</span>
+            </div>
+            <div class="row" style="--i:2">
+              <span class="row__date">1993 — 2000</span>
+              <span class="row__role">Menswetenschappen — moderne talen</span>
+              <span class="row__org">@ Koninklijk Atheneum I Hasselt</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================== SKILLS -->
+    <section class="section" id="skills">
+      <div class="section__head" data-reveal>
+        <p class="label">[ SKILLS ]</p>
+        <h2 class="section__title" data-split>the toolbox.</h2>
+        <p class="section__note">Filled dot = core skill, outline = familiar with it.</p>
+      </div>
+
+      <div class="skills-legend" data-reveal>
+        <span><i class="dot dot--core"></i> core skill</span>
+        <span><i class="dot"></i> familiar with</span>
+      </div>
+
+      <div class="skill-cat" data-reveal>
+        <p class="skill-cat__title"><b>Design &amp; UI/UX</b> [ 01 ]</p>
+        <ul class="chips stagger">
+          <li class="chip chip--core" style="--i:0"><i class="chip__dot"></i>Web design</li>
+          <li class="chip chip--core" style="--i:1"><i class="chip__dot"></i>UI/UX design</li>
+          <li class="chip chip--core" style="--i:2"><i class="chip__dot"></i>Figma</li>
+          <li class="chip chip--core" style="--i:3"><i class="chip__dot"></i>Responsive design</li>
+          <li class="chip" style="--i:4"><i class="chip__dot"></i>Logo design</li>
+          <li class="chip" style="--i:5"><i class="chip__dot"></i>Graphics &amp; animation</li>
+        </ul>
+      </div>
+
+      <div class="skill-cat" data-reveal>
+        <p class="skill-cat__title"><b>Development</b> [ 02 ]</p>
+        <ul class="chips stagger">
+          <li class="chip chip--core" style="--i:0"><i class="chip__dot"></i>HTML / CSS</li>
+          <li class="chip chip--core" style="--i:1"><i class="chip__dot"></i>JavaScript</li>
+          <li class="chip" style="--i:2"><i class="chip__dot"></i>Bootstrap</li>
+          <li class="chip" style="--i:3"><i class="chip__dot"></i>WordPress</li>
+          <li class="chip" style="--i:4"><i class="chip__dot"></i>SEO</li>
+        </ul>
+      </div>
+
+      <div class="skill-cat" data-reveal>
+        <p class="skill-cat__title"><b>Game development</b> [ 03 ]</p>
+        <ul class="chips stagger">
+          <li class="chip chip--core" style="--i:0"><i class="chip__dot"></i>Game design</li>
+          <li class="chip chip--core" style="--i:1"><i class="chip__dot"></i>Phaser.js</li>
+          <li class="chip" style="--i:2"><i class="chip__dot"></i>Godot engine</li>
+        </ul>
+      </div>
+
+      <div class="skill-cat" data-reveal>
+        <p class="skill-cat__title"><b>Creative Cloud</b> [ 04 ]</p>
+        <ul class="chips stagger">
+          <li class="chip chip--core" style="--i:0"><i class="chip__dot"></i>Photoshop</li>
+          <li class="chip chip--core" style="--i:1"><i class="chip__dot"></i>Illustrator</li>
+          <li class="chip" style="--i:2"><i class="chip__dot"></i>InDesign</li>
+          <li class="chip" style="--i:3"><i class="chip__dot"></i>After Effects</li>
+        </ul>
+      </div>
+
+      <div class="skill-cat" data-reveal>
+        <p class="skill-cat__title"><b>3D &amp; AI</b> [ 05 ]</p>
+        <ul class="chips stagger">
+          <li class="chip chip--core" style="--i:0"><i class="chip__dot"></i>AI literacy</li>
+          <li class="chip chip--core" style="--i:1"><i class="chip__dot"></i>Adobe Project Neo</li>
+          <li class="chip" style="--i:2"><i class="chip__dot"></i>Blender 3D</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ========================================================== CONTACT -->
+    <section class="section" id="contact">
+      <div class="section__head" data-reveal>
+        <p class="label">[ CONTACT ]</p>
+        <h2 class="section__title" data-split>let's make something.</h2>
+        <p class="section__note">Freelance projects, workshops, guest lessons or just a hello.</p>
+      </div>
+
+      <a class="contact__mail" href="mailto:daedalusdesigns@gmail.com" data-split data-reveal
+        data-tip="send an e-mail">daedalusdesigns@gmail.com</a>
+
+      <div class="contact__grid stagger" data-reveal>
+        <div class="contact__cell" style="--i:0">
+          <span class="k">[ PHONE ]</span>
+          <a href="tel:+32479836955">+32 479 83 69 55</a>
+        </div>
+        <div class="contact__cell" style="--i:1">
+          <span class="k">[ E-MAIL ]</span>
+          <a href="mailto:daedalusdesigns@gmail.com">daedalusdesigns@gmail.com</a>
+          <button class="copy-btn" type="button" data-copy="daedalusdesigns@gmail.com">[ copy e-mail ]</button>
+        </div>
+        <div class="contact__cell" style="--i:2">
+          <span class="k">[ ADDRESS ]</span>
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=Kleine+Nieuwedijkstraat+38c+2800+Mechelen"
+            target="_blank" rel="noopener">Kleine Nieuwedijkstraat 38c,<br />2800 Mechelen</a>
+        </div>
+        <div class="contact__cell" style="--i:3">
+          <span class="k">[ WORK ]</span>
+          <a href="https://www.tsmmechelen.be/" target="_blank" rel="noopener">TSM Mechelen</a>
+          <span class="v dim" style="font-size:.9rem">steven.vandersmissen@tsmmechelen.net</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================== FOOTER -->
+  <footer class="footer">
+    <div class="footer__socials" data-reveal>
+      <a class="soc" href="https://vimeo.com/vandersmissen" target="_blank" rel="noopener">vimeo ↗</a>
+      <a class="soc" href="https://www.linkedin.com/in/steven-vandersmissen-4815503b5/" target="_blank" rel="noopener">linkedin ↗</a>
+      <a class="soc" href="https://www.instagram.com/slowbouncer" target="_blank" rel="noopener">instagram ↗</a>
+      <a class="soc" href="https://www.facebook.com/steven.vandersmissen" target="_blank" rel="noopener">facebook ↗</a>
+    </div>
+
+    <button class="theme-btn" type="button" data-theme-toggle data-magnetic="0.2" aria-label="Change colour theme">
+      <span class="theme-btn__swatch" aria-hidden="true"></span>
+      <span>[ theme: <span data-theme-label>green</span> ]</span>
+    </button>
+
+    <p class="footer__copy">
+      © <span data-year>2026</span> DaedalusDesigns. All rights reserved.<br />
+      <a class="to-top" href="#top">[ back to top ↑ ]</a>
+    </p>
+  </footer>
+
+  <!-- ========================================================= LIGHTBOX -->
+  <div class="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Animation preview">
+    <div class="lightbox__inner">
+      <img src="" alt="" />
+      <div class="lightbox__bar">
+        <span data-lb-title></span>
+        <button class="lightbox__close" type="button" data-lb-close>[ close ✕ ]</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js" defer></script>
 </body>
 
 </html>

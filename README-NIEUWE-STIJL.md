@@ -1,0 +1,73 @@
+# Nieuwe stijl — geïnspireerd op foundation-labs.xyz
+
+De site is herbouwd als **één pagina** in de stijl van Foundation Labs:
+een fel, vlak kleurvlak, monospace labels tussen vierkante haken (`[ ABOUT ]`),
+gigantische strakke grotesque koppen in kleine letters, afgeronde beeldkaarten
+met zachte schaduw, en hover-gedrag waarbij zusterelementen dimmen.
+
+## Wat is er nieuw
+
+| Bestand | Rol |
+|---|---|
+| `index.html` | Nieuwe één-pagina site (about / work / resume / skills / contact) |
+| `css/main.css` | Alle styling + animaties, geen framework, geen jQuery |
+| `js/main.js` | Vanilla JS: reveals, filters, lightbox, thema-wisselaar, cursor-chip … |
+| `favicon.svg` | Nieuw favicon (doolhof-monogram, past bij "Daedalus") |
+| `images/opengraph.png` | Nieuwe social-preview afbeelding (1200×630) |
+| `images/works/thumbs/*.webp` | Lichte webp-thumbnails voor alle kaarten (±380 KB totaal) |
+| `resume.html`, `portfolio.html`, `contacts.html` | Nu doorverwijzingen naar `index.html#…` (oude links blijven werken) |
+
+## Thema-wisselaar
+
+Knop onderaan de pagina: `[ theme: green ]`. Cyclust door
+**green → dark → blue → pink → purple** (zelfde paletten als Foundation Labs).
+De keuze wordt onthouden in `localStorage` en de wissel gebeurt met een
+*circular reveal* via de View Transitions API (met nette fallback).
+
+## Animaties (allemaal met `prefers-reduced-motion` fallback)
+
+1. **Intro** — logo, nav, kop en ticker faden getrapt in bij het laden.
+2. **Word-mask reveal** — grote koppen rollen woord per woord omhoog.
+3. **Scroll-reveals** — secties, kaarten en rijen komen binnen via IntersectionObserver
+   (fade/slide, clip-reveal voor de portrait, stagger voor lijsten).
+4. **Ticker/marquee** — oneindige band met disciplines, pauzeert bij hover.
+5. **Nav-dimming** — hover je één nav-item, dan dimmen de andere (Foundation-gedrag).
+6. **Kaart-hover** — beeld zoomt traag, jaartal/category-badge schuift in,
+   zusterkaarten dimmen, en een **cursor-chip** ("view site", "play animation") volgt de muis.
+7. **Filters** — `[ all ] [ web ] [ 2d animation ] [ teaching ]` met getrapt card-in effect.
+8. **Lightbox** — animaties (jimmy, floral loop, morphing) openen in een dialoog met blur-backdrop.
+9. **Rij-hover** — resume-rijen vullen zich van boven met de voorgrondkleur (invert).
+10. **Scroll-progress** — dunne lijn bovenaan de pagina.
+11. **Magnetische knoppen** — CV/knoppen/theme bewegen licht mee met de cursor.
+12. **Thema-wissel** — circulaire view-transition vanuit de knop.
+
+## Publiceren
+
+De map is gewoon statisch (GitHub Pages-vriendelijk). Twee opties:
+
+**Optie A — patch toepassen op je lokale clone**
+```bash
+git apply --binary nieuwe-stijl.patch
+git add -A && git commit -m "Nieuwe stijl (foundation-labs inspired)" && git push
+```
+
+**Optie B — mapinhoud kopiëren**
+Kopieer de inhoud van deze map over je repository-root (bestanden met dezelfde
+naam overschrijven) en push.
+
+## Optionele opschoning
+
+De nieuwe site gebruikt **geen** jQuery, isotope, magnific-popup, typed.js of ionicons meer.
+Deze mappen/bestanden zijn daarom dood gewicht en mogen weg (na controle):
+
+- `css/` (behalve `css/main.css`), `js/` (behalve `js/main.js`), `less/`, `fonts/`
+- `mailer/` (PHP werkt toch niet op GitHub Pages; contact loopt nu via mailto + kopieerknop)
+- `layout.css` in de root
+
+**Behouden:** `images/works/*` (originelen voor lightbox/PDF), `images/works/thumbs/`,
+`images/favicons/`, `images/me.jpg`, `CV-stevenvandersmissen.pdf`, `StevenVandersmissenCV.pdf`.
+
+## Lettertypes
+
+Google Fonts: **Inter Tight** (koppen/tekst) en **JetBrains Mono** (labels).
+Zonder netwerk valt de site terug op Helvetica/Arial + systeem-mono.
