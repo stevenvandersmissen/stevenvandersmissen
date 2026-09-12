@@ -162,18 +162,26 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   overflow: visible;
 }
 
+.logo__mark {
+  transition: transform 0.7s var(--ease);
+}
+
 .logo__mark path {
   fill: none;
   stroke: currentColor;
   stroke-width: 5;
   stroke-linecap: square;
   stroke-linejoin: miter;
-  stroke-dasharray: 620;
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset 1.4s var(--ease);
+  stroke-dasharray: 380;
+  stroke-dashoffset: 380;
+  animation: draw 1.5s var(--ease) 0.25s forwards;
 }
 
-.logo:hover .logo__mark path { stroke-dashoffset: 620; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+/* playful quarter-turn on hover instead of the old erase effect */
+.logo:hover .logo__mark,
+.topbar__logo:hover .logo__mark { transform: rotate(-90deg) scale(1.06); }
 
 .logo__tag {
   font-family: var(--font-mono);
@@ -196,12 +204,30 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 .nav__list a {
   display: block;
+  position: relative;
   padding: 0.1em 0;
   font-size: clamp(1.9rem, 1.2rem + 3vw, 3.6rem);
   line-height: 1.02;
   letter-spacing: -0.05em;
   transition: opacity 0.35s var(--ease), transform 0.35s var(--ease), color 0.35s var(--ease);
 }
+
+/* sliding underline */
+.nav__list a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.06em;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease);
+}
+
+.nav__list a:hover::before,
+.nav__list a.is-active::before { transform: scaleX(1); }
 
 /* Foundation-style: hovering one item dims the siblings */
 .nav__list:hover a:not(:hover) { opacity: 0.38; }
@@ -1249,4 +1275,141 @@ html.vt-circle::view-transition-new(root) {
 
 @media (max-width: 700px) {
   .game__frame { aspect-ratio: 4 / 3; }
+}
+
+/* ==========================================================================
+   Sticky top bar — slides in after the hero scrolls away
+   ========================================================================== */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.55rem var(--pad);
+  background: color-mix(in oklab, var(--bg) 78%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--fg-20);
+  transform: translateY(-110%);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.55s var(--ease), opacity 0.45s var(--ease),
+              background-color 0.6s var(--ease), visibility 0s 0.55s;
+}
+
+.topbar.is-on {
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.topbar__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex: 0 0 auto;
+}
+
+.logo__mark--sm { width: 26px; }
+
+/* the mini logo is drawn when the bar slides in, not on page load */
+.topbar .logo__mark path { animation: none; stroke-dashoffset: 0; }
+
+.topbar__name {
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.topbar__nav {
+  display: flex;
+  gap: 1.15rem;
+  margin-left: auto;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.topbar__nav a {
+  position: relative;
+  padding: 0.2rem 0;
+  color: var(--fg-60);
+  transition: color 0.3s var(--ease);
+}
+
+.topbar__nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease);
+}
+
+.topbar__nav a:hover { color: var(--fg); }
+.topbar__nav a:hover::after { transform: scaleX(1); }
+
+.topbar__nav a.is-active { color: var(--fg); }
+.topbar__nav a.is-active::after { transform: scaleX(1); }
+
+.topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-left: auto;
+}
+
+.topbar__nav + .topbar__right { margin-left: 0; }
+
+.topbar__clock {
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: var(--fg-60);
+  white-space: nowrap;
+  animation: clockIn 0.6s var(--ease) both;
+}
+
+.topbar:not(.is-on) .topbar__clock { animation: none; }
+.topbar.is-on .topbar__clock { animation-delay: 0.25s; }
+
+@keyframes clockIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.theme-btn--sm { padding: 0.35rem 0.7rem; font-size: 0.68rem; }
+
+/* staggered entrance of bar children when it opens */
+.topbar.is-on > * { animation: barChild 0.5s var(--ease) both; }
+.topbar.is-on > :nth-child(1) { animation-delay: 0.05s; }
+.topbar.is-on > :nth-child(2) { animation-delay: 0.12s; }
+.topbar.is-on > :nth-child(3) { animation-delay: 0.19s; }
+
+@keyframes barChild {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (max-width: 860px) {
+  .topbar__nav { display: none; }
+  .topbar__right { margin-left: auto; }
+}
+
+@media (max-width: 480px) {
+  .topbar__clock { display: none; }
+  .topbar__name { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo__mark path { animation: none; stroke-dashoffset: 0; }
+  .topbar.is-on > * { animation: none; }
 }

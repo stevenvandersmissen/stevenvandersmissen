@@ -93,7 +93,8 @@
   }
 
   /* ------------------------------------------------------ 3. scrollspy */
-  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav__list a'));
+  var navLinks = Array.prototype.slice.call(
+    document.querySelectorAll('.nav__list a, .topbar__nav a'));
   var sections = navLinks
     .map(function (a) { return document.querySelector(a.getAttribute('href')); })
     .filter(Boolean);
@@ -111,8 +112,27 @@
     sections.forEach(function (s) { spy.observe(s); });
   }
 
+  /* --------------------------------------------------- 3b. mechelen clock */
+  var clockEl = document.getElementById('clock');
+  if (clockEl) {
+    var fmt = null;
+    try {
+      fmt = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Europe/Brussels',
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+      });
+    } catch (e) { fmt = null; }
+    var tickClock = function () {
+      var t = fmt ? fmt.format(new Date()) : new Date().toTimeString().slice(0, 8);
+      clockEl.textContent = '[ MECHELEN ' + t + ' ]';
+    };
+    tickClock();
+    window.setInterval(tickClock, 1000);
+  }
+
   /* ------------------------------------------------- 4. scroll progress */
   var bar = document.querySelector('.progress');
+  var topbar = document.getElementById('topbar');
   var ticking = false;
 
   function onScroll() {
@@ -122,6 +142,7 @@
       var max = document.documentElement.scrollHeight - window.innerHeight;
       var p = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
       if (bar) bar.style.transform = 'scaleX(' + p + ')';
+      if (topbar) topbar.classList.toggle('is-on', window.scrollY > window.innerHeight * 0.65);
       ticking = false;
     });
   }
@@ -137,14 +158,14 @@
     { id: 'purple', label: 'purple' }
   ];
 
-  var themeBtn = document.querySelector('[data-theme-toggle]');
-  var themeLabel = document.querySelector('[data-theme-label]');
+  var themeBtns = document.querySelectorAll('[data-theme-toggle]');
+  var themeLabels = document.querySelectorAll('[data-theme-label]');
   var themeMeta = document.querySelector('meta[name="theme-color"]');
 
   function applyTheme(id, silent) {
     var theme = THEMES.filter(function (t) { return t.id === id; })[0] || THEMES[0];
     root.setAttribute('data-theme', theme.id);
-    if (themeLabel) themeLabel.textContent = theme.label;
+    themeLabels.forEach(function (l) { l.textContent = theme.label; });
     if (themeMeta) {
       themeMeta.setAttribute('content', getComputedStyle(root).getPropertyValue('--bg').trim());
     }
@@ -164,7 +185,7 @@
   try { stored = localStorage.getItem('sv-theme'); } catch (e) {}
   applyTheme(stored || root.getAttribute('data-theme') || 'green', true);
 
-  if (themeBtn) {
+  themeBtns.forEach(function (themeBtn) {
     themeBtn.addEventListener('click', function (ev) {
       var id = nextTheme();
 
@@ -180,7 +201,7 @@
       vt.finished.then(function () { root.classList.remove('vt-circle'); })
         .catch(function () { root.classList.remove('vt-circle'); });
     });
-  }
+  });
 
   /* -------------------------------------------------- 6. cursor chip */
   var tip = document.querySelector('.cursor-tip');
@@ -388,9 +409,15 @@
 
   /* ============================ wave 2 — extra eye-catchers ============ */
 
-  /* release intro-filled animations so inline transforms work afterwards */
+  /* release intro-filled animations so inline transforms work afterwards.
+     NOTE: pin opacity/transform inline first — removing the animation alone
+     would drop the element back to the opacity:0 base rule. */
   document.querySelectorAll('[data-intro]').forEach(function (el) {
-    el.addEventListener('animationend', function () { el.style.animation = 'none'; }, { once: true });
+    el.addEventListener('animationend', function () {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+      el.style.animation = 'none';
+    }, { once: true });
   });
 
   /* ----------------------------------------- 13. scramble-decode labels */

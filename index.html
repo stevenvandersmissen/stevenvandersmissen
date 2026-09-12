@@ -51,6 +51,33 @@
   <div class="progress" aria-hidden="true"></div>
   <div class="cursor-tip" aria-hidden="true"><span>view</span></div>
 
+  <!-- ================================================ STICKY TOP BAR -->
+  <header class="topbar" id="topbar">
+    <a class="topbar__logo" href="#top" aria-label="Steven Vandersmissen — back to top">
+      <svg class="logo__mark logo__mark--sm" viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M6 6 H58 V58 H14 V14 H50 V50 H22 V22 H42 V42 H30" />
+      </svg>
+      <span class="topbar__name mono">steven vandersmissen</span>
+    </a>
+
+    <nav class="topbar__nav mono" aria-label="Quick navigation">
+      <a href="#about">about</a>
+      <a href="#work">work</a>
+      <a href="#resume">resume</a>
+      <a href="#play">play</a>
+      <a href="#contact">contact</a>
+    </nav>
+
+    <div class="topbar__right">
+      <span class="topbar__clock mono" id="clock" aria-hidden="true">[ MECHELEN --:--:-- ]</span>
+      <button class="theme-btn theme-btn--sm" type="button" data-theme-toggle data-magnetic="0.15"
+        aria-label="Change colour theme">
+        <span class="theme-btn__swatch" aria-hidden="true"></span>
+        <span>[ <span data-theme-label>green</span> ]</span>
+      </button>
+    </div>
+  </header>
+
   <!-- ============================================================== HERO -->
   <section class="hero intro" id="top">
     <header class="hero__head">

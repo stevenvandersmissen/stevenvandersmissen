@@ -65,6 +65,21 @@ worden met Phaser-graphics gegenereerd in de kleuren van het actieve thema.
 18. **Shine-sweep** — lichtflits over kaartbeelden bij hover
 19. **Omgekeerde ticker** — tweede marquee-band die de andere richting op draait
 
+## Wave 3 — header-animaties + sticky topbar
+
+- **Logo tekent zichzelf in** bij het laden (stroke-dashoffset-animatie van het
+  doolhof-pad); hover geeft een speelse kwartslag i.p.v. het oude wis-effect
+  (dat op touch-toestellen bleef hangen)
+- **Sticky topbar** schuift naar binnen zodra je voorbij ±65% van de hero scrolt:
+  mini-logo + naam, quick-nav met actieve sectie-onderstreping, live klok
+  `[ MECHELEN hh:mm:ss ]` (Europe/Brussels) en een tweede thema-knop.
+  Blur-backdrop, getrapte kind-animaties bij het openen, en `visibility`-delay
+  zodat de verborgen bar niet focusbaar is
+- **Geanimeerde underline** op de grote nav-links (schuift van links naar rechts)
+- Bugfix: intro-elementen bleven na hun animatie op `opacity: 0` vallen
+  (waardoor de header "leeg" leek) — opacity/transform worden nu inline gepind
+  zodra de intro-animatie eindigt
+
 ## Publiceren
 
 De map is gewoon statisch (GitHub Pages-vriendelijk). Twee opties:
