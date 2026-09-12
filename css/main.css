@@ -1450,3 +1450,29 @@ html.vt-circle::view-transition-new(root) {
 @media (prefers-reduced-motion: reduce) {
   .fx-hint { animation: none; opacity: 0.5; }
 }
+
+/* ==========================================================================
+   Physics playground (Matter.js + GSAP, see js/physics.js)
+   ========================================================================== */
+#fx-canvas { pointer-events: none; }
+
+.hero.is-grabbing,
+.hero.is-grabbing * { cursor: grabbing !important; }
+
+.fx-hint {
+  top: 30%;
+  line-height: 1.9;
+  text-align: center;
+}
+
+.fx-shelf-tag {
+  position: absolute;
+  left: 4%;
+  top: calc(56% + 8px);
+  z-index: 1;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-60);
+  pointer-events: none;
+}

@@ -80,25 +80,32 @@ worden met Phaser-graphics gegenereerd in de kleuren van het actieve thema.
   (waardoor de header "leeg" leek) — opacity/transform worden nu inline gepind
   zodra de intro-animatie eindigt
 
-## Wave 4 — interactieve GSAP-particles in de lege hero-zone
+## Wave 4 — interactieve physics playground in de lege hero-zone
 
-`js/particles.js` + `js/gsap.min.js` (GSAP 3.12.5, lokaal — geen CDN).
+`js/physics.js` + `js/matter.min.js` (Matter.js 0.19) + `js/gsap.min.js`
+(GSAP 3.12.5) — beide lokaal, geen CDN. Verving het eerdere particle-veld.
 
-Een canvas-veld met vlakke vierkantjes, ruiten en ringetjes in de thema-
-voorgrondkleur dat de grote lege ruimte in de hero vult:
+Een echte rigid-body simulatie in de lege ruimte boven de hero-titel:
 
-- **Intro**: alle particles poppen getrapt uit het midden (GSAP `power3.out`)
-- **Cursor-repulsie**: particles binnen 150 px wijken uit en veren elastisch terug
-- **Klik-shockwave**: uitdijende ring (GSAP-tween) + radiale impuls, extra spin
-  en een elastic size-pop op geraakte particles
-- **Drift**: homes bewegen traag sinusvormig en wrappen aan de randen
-- Kleurt live mee met het thema (`themechange`), pauzeert wanneer de hero uit
-  beeld scrolt, en bij `prefers-reduced-motion` wordt er een statisch veld
-  getekend zonder interactie
-- Subtiele hint `[ move · click ]` die na de eerste interactie uitfade
-
-GSAP draait de render-loop (`gsap.ticker`), de intro-tweens, de shockwaves en de
-resize-debounce.
+- **Shapes**: vierkanten, balken, zeskanten, driehoeken en bolletjes — gevuld
+  of outline — vallen in clusters binnen en stapelen op een onzichtbare richel
+  net boven de gigantische titel (de plank-positie wordt uit de DOM berekend,
+  dus altijd in de échte lege zone, op elk formaat)
+- **Grab & throw**: pak een shape vast en slinger hem weg (eigen pointer-logica
+  met throw-velocity uit de pointer-trail — werkt met muis én touch, zonder
+  het scrollen van de pagina te blokkeren); gestippelde tether tijdens vasthouden
+- **Click = spawn** op de cursorpositie, **double-click = reset** met pop-out
+  en verse regen; max. 34 bodies (oudste wordt weggepopt)
+- **GSAP-juice**: elastic pop-in bij spawn, back.in pop-out bij removal,
+  impact-ringen bij harde botsingen, ambient rain om de 6–12 s
+- **Matter-physics**: gravity, restitution, friction, angular velocity,
+  sleeping (spaart CPU zodra de stapel ligt)
+- Eigen flat 2D-rendering in de themakleuren (kleurt live mee via `themechange`),
+  shelf-lijn met streepjes en een `[ playground ]`-tag
+- Pauzeert buiten beeld / verborgen tab; bij `prefers-reduced-motion` wordt een
+  statische, vooraf gesettelde stapel getekend zonder interactie
+- Hint `[ drag & throw ] / [ click = spawn · 2× click = reset ]` fade uit na
+  de eerste interactie
 
 ## Publiceren
 
