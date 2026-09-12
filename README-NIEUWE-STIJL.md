@@ -127,6 +127,28 @@ dus altijd in de échte lege zone, op elk formaat).
 - **Live preview**: `python3 -m http.server 8080` in deze map; de multi-file
   versie is en blijft de "echte" site, standalone.html is alleen voor previews
 
+## Wave 7 — ASCII-glyph field (zoals foundation-labs.xyz)
+
+De ball pit en eerdere physics-toys zijn vervangen door het signature-effect
+van de voorbeeldsite: een full-hero **ASCII/pixel-veld** (`js/ascii.js`,
+geen externe libs meer nodig — gsap/matter zijn verwijderd).
+
+- Grid van monospace glyphs (`· ∙ ◦ △ ○ □ + ▲ ● ■ ✦ ◼`) op 8,4×14,3 px,
+  gedreven door gelaagde sine-noise die langzaam ademt
+- **Cursor warp**: kolommen/rijen buigen rond de pointerpositie (zoals het
+  voorbeeld) + zwaardere pixels dicht bij de cursor als glow
+- **Scroll-drift**: de field-focus volgt de scrollpositie, zoals op
+  foundation-labs.xyz
+- **Click = ripple**: uitdijende ring van zware pixels met outward push
+- **Leesbaarheid**: het veld stroomt rond de tekstzones (title, nav, logo,
+  meta, label) met een feathered rand — harde skip binnen de tekstboxen,
+  gedempte glyphs in de overgangsband
+- Glyphs worden per thema pre-rendered naar sprite-canvassen; ~40 fps cap en
+  adaptieve grid-vergroving als frames te traag blijven
+- Themakleuren live via `themechange`; pauze buiten beeld / verborgen tab;
+  bij `prefers-reduced-motion` één statisch frame
+- Hint `[ move = warp · click = ripple ]` (bg-pill) fade na eerste click
+
 ## Publiceren
 
 De map is gewoon statisch (GitHub Pages-vriendelijk). Twee opties:

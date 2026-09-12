@@ -1428,6 +1428,9 @@ html.vt-circle::view-transition-new(root) {
 .hero > *:not(#fx-canvas) { position: relative; z-index: 1; }
 
 .fx-hint {
+  padding: 0.35rem 0.8rem;
+  background: var(--bg);
+  border-radius: 99px;
   position: absolute;
   left: 50%;
   top: 42%;
@@ -1449,7 +1452,10 @@ html.vt-circle::view-transition-new(root) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fx-hint { animation: none; opacity: 0.5; }
+  .fx-hint {
+  padding: 0.35rem 0.8rem;
+  background: var(--bg);
+  border-radius: 99px; animation: none; opacity: 0.5; }
 }
 
 /* ==========================================================================
@@ -1457,23 +1463,13 @@ html.vt-circle::view-transition-new(root) {
    ========================================================================== */
 #fx-canvas { pointer-events: none; }
 
-.hero.is-grabbing,
-.hero.is-grabbing * { cursor: grabbing !important; }
 
 .fx-hint {
-  top: 30%;
+  padding: 0.35rem 0.8rem;
+  background: var(--bg);
+  border-radius: 99px;
+  top: 34%;
   line-height: 1.9;
   text-align: center;
 }
 
-.fx-shelf-tag {
-  position: absolute;
-  left: 4%;
-  top: calc(56% + 8px);
-  z-index: 1;
-  font-size: 0.66rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--fg-60);
-  pointer-events: none;
-}
