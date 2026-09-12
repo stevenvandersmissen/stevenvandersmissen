@@ -224,7 +224,6 @@
 
   /* radial blast: kick every ball away from the click */
   function blast(p) {
-    if (reduce) return;
     var R = BLAST_R * DPR;
     bodies.forEach(function (b) {
       var dx = b.position.x - p.x;
@@ -249,7 +248,7 @@
 
   /* double-click: gravity flips for a beat, then the pit rains back down */
   function flipGravity() {
-    if (reduce || flipping) return;
+    if (flipping) return;
     flipping = true;
     hideHint();
     bodies.forEach(wake);
@@ -268,7 +267,7 @@
         x: (pointer.x - grabbed.position.x) * 0.22,
         y: (pointer.y - grabbed.position.y) * 0.22
       });
-    } else if (pointer.active && !reduce) {
+    } else if (pointer.active) {
       var R = FIELD_R * DPR;
       for (var i = 0; i < bodies.length; i++) {
         var b = bodies[i];
@@ -391,22 +390,23 @@
   function frame() { if (inView) drawScene(); }
 
   function setRunning(on) {
-    if (reduce) return;
     if (on && !runner.enabled) Matter.Runner.run(runner, engine);
     if (!on && runner.enabled) Matter.Runner.stop(runner);
   }
 
-  if (!reduce) {
-    Matter.Runner.run(runner, engine);
-    gsap.ticker.add(frame);
-  } else {
+  resize();   /* must run first: builds walls/floor the pre-settle needs */
+
+  if (reduce) {
+    /* pre-settled pit, no autonomous motion — but grab/blast/flip stay
+       available because they are user-initiated */
     for (var i = 0; i < 30; i++) {
       makeBall(wallL + 20 * DPR + Math.random() * (wallR - wallL - 40 * DPR),
         shelfY - 10 * DPR - Math.random() * 160 * DPR);
     }
     for (var k = 0; k < 300; k++) Matter.Engine.update(engine, 1000 / 60);
-    drawScene();
   }
+  Matter.Runner.run(runner, engine);
+  gsap.ticker.add(frame);
 
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (entries) {
@@ -452,7 +452,6 @@
   }
 
   /* --------------------------------------------------------------- go */
-  resize();
   if (!reduce) { seedPit(); ambient(); }
 
   /* tiny debug hook */

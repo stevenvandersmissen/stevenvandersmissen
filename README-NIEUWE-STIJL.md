@@ -110,6 +110,23 @@ dus altijd in de échte lege zone, op elk formaat).
 - Hint `[ move to part · drag to throw · click = blast ] / [ 2× click = flip
   gravity ]` fade uit na de eerste interactie
 
+## Wave 6 — robustheid: portrait-formaat, standalone build, reduced-motion
+
+- **Portrait klein gehouden**: `.portrait { max-width: 380px }` op alle
+  schermformaten (voorheen alleen < 860px, waardoor de foto op 2560px breed
+  ~1037px werd)
+- **`standalone.html`**: single-file build (alle CSS, JS én afbeeldingen
+  inline als data-uri's, ~1,9 MB) gegenereerd door `build-standalone.py`.
+  Werkt overal zonder sibling files: dubbelklikken, in de zip, of in
+  sandboxed previews (zoals de workspace-viewer) waar externe bestanden
+  niet laden. Regenereren na wijzigingen: `python3 build-standalone.py`
+- **Reduced-motion gecorrigeerd**: de pre-settle draaide vóór `resize()`,
+  dus zonder vloer vielen de ballen oneindig (lege canvas). Nu: static
+  gesettelde pit zónder autonome motion (geen rain/sparks), maar mét
+  user-initiated physics (grab, krachtveld, blast, flip)
+- **Live preview**: `python3 -m http.server 8080` in deze map; de multi-file
+  versie is en blijft de "echte" site, standalone.html is alleen voor previews
+
 ## Publiceren
 
 De map is gewoon statisch (GitHub Pages-vriendelijk). Twee opties:
