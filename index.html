@@ -80,6 +80,9 @@
 
   <!-- ============================================================== HERO -->
   <section class="hero intro" id="top">
+    <canvas id="fx-canvas" aria-hidden="true"></canvas>
+    <span class="fx-hint mono" id="fx-hint" aria-hidden="true">[ move · click ]</span>
+
     <header class="hero__head">
       <a class="logo" href="#top" aria-label="Steven Vandersmissen — home" data-intro style="--d:.05s">
         <svg class="logo__mark" viewBox="0 0 64 64" aria-hidden="true">
@@ -584,6 +587,8 @@
   </div>
 
   <script src="js/main.js" defer></script>
+  <script src="js/gsap.min.js" defer></script>
+  <script src="js/particles.js" defer></script>
   <script src="js/phaser.min.js" defer></script>
   <script src="js/game.js" defer></script>
 </body>

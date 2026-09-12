@@ -80,6 +80,26 @@ worden met Phaser-graphics gegenereerd in de kleuren van het actieve thema.
   (waardoor de header "leeg" leek) — opacity/transform worden nu inline gepind
   zodra de intro-animatie eindigt
 
+## Wave 4 — interactieve GSAP-particles in de lege hero-zone
+
+`js/particles.js` + `js/gsap.min.js` (GSAP 3.12.5, lokaal — geen CDN).
+
+Een canvas-veld met vlakke vierkantjes, ruiten en ringetjes in de thema-
+voorgrondkleur dat de grote lege ruimte in de hero vult:
+
+- **Intro**: alle particles poppen getrapt uit het midden (GSAP `power3.out`)
+- **Cursor-repulsie**: particles binnen 150 px wijken uit en veren elastisch terug
+- **Klik-shockwave**: uitdijende ring (GSAP-tween) + radiale impuls, extra spin
+  en een elastic size-pop op geraakte particles
+- **Drift**: homes bewegen traag sinusvormig en wrappen aan de randen
+- Kleurt live mee met het thema (`themechange`), pauzeert wanneer de hero uit
+  beeld scrolt, en bij `prefers-reduced-motion` wordt er een statisch veld
+  getekend zonder interactie
+- Subtiele hint `[ move · click ]` die na de eerste interactie uitfade
+
+GSAP draait de render-loop (`gsap.ticker`), de intro-tweens, de shockwaves en de
+resize-debounce.
+
 ## Publiceren
 
 De map is gewoon statisch (GitHub Pages-vriendelijk). Twee opties:

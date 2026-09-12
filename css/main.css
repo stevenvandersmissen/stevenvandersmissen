@@ -1413,3 +1413,40 @@ html.vt-circle::view-transition-new(root) {
   .logo__mark path { animation: none; stroke-dashoffset: 0; }
   .topbar.is-on > * { animation: none; }
 }
+
+/* ==========================================================================
+   Hero particle field (GSAP-driven, see js/particles.js)
+   ========================================================================== */
+#fx-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero > *:not(#fx-canvas) { position: relative; z-index: 1; }
+
+.fx-hint {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  transform: translate(-50%, -50%);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-60);
+  pointer-events: none;
+  animation: hintPulse 3.2s var(--ease-io) infinite;
+  transition: opacity 0.7s var(--ease);
+}
+
+.fx-hint.is-off { opacity: 0 !important; animation: none; }
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.3; }
+  50%      { opacity: 0.7; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-hint { animation: none; opacity: 0.5; }
+}
