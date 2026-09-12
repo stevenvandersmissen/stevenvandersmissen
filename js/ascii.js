@@ -18,7 +18,12 @@
 
   var CHARS = [' ', '·', '∙', '◦', '△', '○', '□', '+', '▲', '●', '■', '✦', '▲', '◼', ''];
   var FONT = '13px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
-  var CELL_W = 8.4, CELL_H = 14.3;
+  /* quality tiers: [cellW, cellH, minFrameMs] — auto-escalates on slow
+     devices (CPU-rasterised canvas, phones) so the field never "freezes" */
+  var TIERS = [[8.4, 14.3, 33], [10.5, 18, 50], [13, 22, 83]];
+  var tier = (navigator.maxTouchPoints > 0 || (navigator.hardwareConcurrency || 8) <= 4) ? 1 : 0;
+  var CELL_W = TIERS[tier][0], CELL_H = TIERS[tier][1], FRAME_MS = TIERS[tier][2];
+  var staticMode = false;
 
   var dpr = 1, W = 0, H = 0, cols = 0, rows = 0;
   var fg = '#000', bg = '#00ff11';
@@ -75,6 +80,7 @@
 
   /* keep the glyph field out of the text zones so type stays readable:
      a hard core (skip) plus a feathered band (dimmed) */
+  var maskGrid = null;   /* per-cell fade factor, precomputed on resize */
   var masks = [];
   function buildMasks() {
     masks = [];
@@ -88,6 +94,13 @@
         w: r.width + 20, h: r.height + 20
       });
     });
+    /* bake the per-cell factors once instead of per frame */
+    maskGrid = new Float32Array(cols * rows);
+    for (var f = 0; f < rows; f++) {
+      for (var h = 0; h < cols; h++) {
+        maskGrid[f * cols + h] = maskFactor(h * CELL_W + CELL_W / 2, f * CELL_H + CELL_H / 2);
+      }
+    }
   }
 
   function maskFactor(cx, cy) {
@@ -120,7 +133,7 @@
     ripples.push({ x: e.clientX - rect.left, y: e.clientY - rect.top, t0: performance.now() });
     if (ripples.length > 5) ripples.shift();
     if (hint && !hint.classList.contains('is-off')) hint.classList.add('is-off');
-    if (reduce) draw(1200);
+    if (reduce || staticMode) draw(performance.now());
   });
 
   /* ------------------------------------------------------------ render */
@@ -176,7 +189,7 @@
 
         if (idx < 1) continue;
         if (idx > CHARS.length - 1) idx = CHARS.length - 1;
-        var factor = maskFactor(cx + CELL_W / 2, cy + CELL_H / 2);
+        var factor = maskGrid[f * cols + h];
         if (factor === 0) continue;
         if (factor !== curAlpha) { ctx.globalAlpha = factor; curAlpha = factor; }
         ctx.drawImage(sprites[idx], Math.round(cx + ox), Math.round(cy + oy));
@@ -191,14 +204,27 @@
 
   var lastDraw = 0, slow = 0;
   function tick(t) {
-    if (inView && t - lastDraw >= 25) {      /* ~40 fps cap */
+    if (inView && !staticMode && t - lastDraw >= FRAME_MS) {
       var t0 = performance.now();
       draw(t);
       var dt = performance.now() - t0;
       lastDraw = t;
-      /* adaptive: if frames stay slow, coarsen the grid once */
-      if (dt > 30 && CELL_W < 10) { if (++slow > 60) { CELL_W = 11.2; CELL_H = 19; resize(); slow = 0; } }
-      else slow = 0;
+      /* struggling? step down a quality tier; last resort = static texture
+         that still reacts to clicks, so the hero is never blank/frozen */
+      if (dt > FRAME_MS * 1.4) {
+        if (++slow > 45) {
+          slow = 0;
+          if (tier < TIERS.length - 1) {
+            tier++; CELL_W = TIERS[tier][0]; CELL_H = TIERS[tier][1]; FRAME_MS = TIERS[tier][2];
+            resize();
+          } else {
+            staticMode = true;
+            setInterval(function () { if (inView) draw(performance.now()); }, 250);
+            cancelAnimationFrame(raf);
+            return;
+          }
+        }
+      } else slow = 0;
     }
     raf = requestAnimationFrame(tick);
   }
