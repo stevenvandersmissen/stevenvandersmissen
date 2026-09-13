@@ -571,6 +571,16 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 .work-card:hover .work-card__media::before { opacity: 0.12; }
 
+/* offline project cards: no link, honest tooltip */
+.work-card--offline { cursor: default; }
+.work-card--offline .work-card__name::after {
+  content: " [ offline ]";
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  opacity: 0.55;
+}
+
 @media (min-width: 900px) {
   .work-card__media { aspect-ratio: 8 / 5; }
 }
