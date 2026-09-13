@@ -1456,7 +1456,17 @@ html.vt-circle::view-transition-new(root) {
   pointer-events: none;
 }
 
-.hero > *:not(#fx-canvas) { position: relative; z-index: 1; }
+.hero > *:not(#fx-canvas):not(.hero__theme) { position: relative; z-index: 1; }
+
+/* theme toggle pinned in the empty top-right corner of the hero,
+   exactly where the topbar button appears once you scroll */
+.hero__theme {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.5rem;
+  z-index: 3;
+  background: var(--bg);   /* solid pill so the glyph field stays outside */
+}
 
 .fx-hint {
   padding: 0.35rem 0.8rem;

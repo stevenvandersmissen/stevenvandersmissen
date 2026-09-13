@@ -85,7 +85,7 @@
   function buildMasks() {
     masks = [];
     var cr = canvas.getBoundingClientRect();
-    ['.hero__title', '.nav', '.logo', '.hero__meta', '.hero__bottom .label'].forEach(function (sel) {
+    ['.hero__title', '.nav', '.logo', '.hero__meta', '.hero__bottom .label', '.hero__theme'].forEach(function (sel) {
       var el = hero.querySelector(sel);
       if (!el) return;
       var r = el.getBoundingClientRect();
