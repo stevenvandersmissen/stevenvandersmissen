@@ -66,8 +66,12 @@
   }
 
   function resize() {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
     var r = hero.getBoundingClientRect();
+    /* internal render resolution is capped (~1200px wide, never upscaled
+       beyond 1:1): a 2560px laptop screen no longer costs 4x the raster
+       work of a phone — the pixel-grid look survives the slight stretch */
+    dpr = Math.min(1, 1200 / Math.max(r.width, 1));
+    dpr = Math.max(dpr, 0.5);
     W = canvas.width = Math.max(1, Math.round(r.width * dpr));
     H = canvas.height = Math.max(1, Math.round(r.height * dpr));
     canvas.style.width = r.width + 'px';
@@ -118,9 +122,14 @@
   }
 
   /* ------------------------------------------------------- interaction */
+  var lastWarpDraw = 0;
   document.addEventListener('mousemove', function (e) {
     mouse.fx = e.clientX / window.innerWidth;
     mouse.pageY = e.pageY;
+    if (staticMode && inView) {
+      var n = performance.now();
+      if (n - lastWarpDraw > 90) { lastWarpDraw = n; draw(n); }
+    }
   });
 
   function isInteractive(e) {
@@ -218,8 +227,10 @@
             tier++; CELL_W = TIERS[tier][0]; CELL_H = TIERS[tier][1]; FRAME_MS = TIERS[tier][2];
             resize();
           } else {
+            /* last resort: low-rate ambient breathing instead of a frozen
+               frame, plus pointer/click redraws so it still feels alive */
             staticMode = true;
-            setInterval(function () { if (inView) draw(performance.now()); }, 250);
+            setInterval(function () { if (inView) draw(performance.now()); }, 200);
             cancelAnimationFrame(raf);
             return;
           }
@@ -271,6 +282,9 @@
   window.__ascii = {
     frames: function () { return frames; },
     cells: function () { return drawnCells; },
-    ripples: function () { return ripples.length; }
+    ripples: function () { return ripples.length; },
+    tier: function () { return tier; },
+    static: function () { return staticMode; },
+    internal: function () { return W + 'x' + H; }
   };
 })();
