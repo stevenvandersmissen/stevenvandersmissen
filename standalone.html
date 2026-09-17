@@ -2936,6 +2936,10 @@ html.vt-circle::view-transition-new(root) {
     if (reduce) draw(1200);
   });
 
+  window.__site = window.__site || {};
+  window.__site.v = 10;
+  window.__site.ascii = true;
+
   window.__ascii = {
     frames: function () { return frames; },
     cells: function () { return drawnCells; },
@@ -2968,12 +2972,21 @@ var k="1.1.14";function w(r,t,e){return Math.max(r,Math.min(t,e))}function _(r,t
      while Lenis drives (inline beats the stylesheet, reduce never gets here) */
   document.documentElement.style.scrollBehavior = 'auto';
 
-  var lenis = new Lenis({
-    duration: 1.15,
-    easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
-    smoothWheel: true,
-    touchMultiplier: 1.6
-  });
+  var lenis;
+  try {
+    lenis = new Lenis({
+      duration: 1.15,
+      easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+      smoothWheel: true,
+      touchMultiplier: 1.6
+    });
+  } catch (err) {
+    /* very old browser? fall back to native scrolling, no broken state */
+    document.documentElement.style.scrollBehavior = '';
+    window.__site = window.__site || {};
+    window.__site.smooth = 'fallback: ' + err.message;
+    return;
+  }
 
   function raf(time) {
     lenis.raf(time);
@@ -2998,6 +3011,8 @@ var k="1.1.14";function w(r,t,e){return Math.max(r,Math.min(t,e))}function _(r,t
     if (e.key === ' ' && document.body.style.overflow === 'hidden') e.preventDefault();
   });
 
+  window.__site = window.__site || {};
+  window.__site.smooth = true;
   window.__smooth = {
     on: true,
     scroll: function () { return lenis.scroll; },

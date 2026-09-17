@@ -279,6 +279,10 @@
     if (reduce) draw(1200);
   });
 
+  window.__site = window.__site || {};
+  window.__site.v = 10;
+  window.__site.ascii = true;
+
   window.__ascii = {
     frames: function () { return frames; },
     cells: function () { return drawnCells; },

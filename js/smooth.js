@@ -14,12 +14,21 @@
      while Lenis drives (inline beats the stylesheet, reduce never gets here) */
   document.documentElement.style.scrollBehavior = 'auto';
 
-  var lenis = new Lenis({
-    duration: 1.15,
-    easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
-    smoothWheel: true,
-    touchMultiplier: 1.6
-  });
+  var lenis;
+  try {
+    lenis = new Lenis({
+      duration: 1.15,
+      easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+      smoothWheel: true,
+      touchMultiplier: 1.6
+    });
+  } catch (err) {
+    /* very old browser? fall back to native scrolling, no broken state */
+    document.documentElement.style.scrollBehavior = '';
+    window.__site = window.__site || {};
+    window.__site.smooth = 'fallback: ' + err.message;
+    return;
+  }
 
   function raf(time) {
     lenis.raf(time);
@@ -44,6 +53,8 @@
     if (e.key === ' ' && document.body.style.overflow === 'hidden') e.preventDefault();
   });
 
+  window.__site = window.__site || {};
+  window.__site.smooth = true;
   window.__smooth = {
     on: true,
     scroll: function () { return lenis.scroll; },
