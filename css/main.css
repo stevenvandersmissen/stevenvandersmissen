@@ -56,6 +56,9 @@ html {
   scroll-padding-top: 1.5rem;
 }
 
+/* Lenis drives scrolling per-frame; native smooth would fight it */
+html.lenis-smooth { scroll-behavior: auto !important; }
+
 body {
   margin: 0;
   background: var(--bg);
