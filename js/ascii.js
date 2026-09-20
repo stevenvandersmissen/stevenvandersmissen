@@ -13,7 +13,8 @@
   var hint = document.getElementById('fx-hint');
   if (!canvas || !hero) return;
 
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduce = window.__reduced ? window.__reduced()
+    : window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var ctx = canvas.getContext('2d');
 
   var CHARS = [' ', '·', '∙', '◦', '△', '○', '□', '+', '▲', '●', '■', '✦', '▲', '◼', ''];
@@ -89,7 +90,7 @@
   function buildMasks() {
     masks = [];
     var cr = canvas.getBoundingClientRect();
-    ['.hero__title', '.nav', '.logo', '.hero__meta', '.hero__bottom .label', '.hero__theme'].forEach(function (sel) {
+    ['.hero__title', '.nav', '.logo', '.hero__meta', '.hero__bottom .label', '.hero__theme', '.hero__motion'].forEach(function (sel) {
       var el = hero.querySelector(sel);
       if (!el) return;
       var r = el.getBoundingClientRect();
@@ -279,8 +280,16 @@
     if (reduce) draw(1200);
   });
 
+  window.addEventListener('motionchange', function () {
+    var now = window.__reduced();
+    if (now === reduce) return;
+    reduce = now;
+    if (reduce) { setRunning(false); draw(1200); }
+    else { staticMode = false; setRunning(inView); }
+  });
+
   window.__site = window.__site || {};
-  window.__site.v = 10;
+  window.__site.v = 11;
   window.__site.ascii = true;
 
   window.__ascii = {

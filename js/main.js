@@ -6,7 +6,16 @@
   'use strict';
 
   var root = document.documentElement;
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduceMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var motionPref = 'auto';
+  try { motionPref = localStorage.getItem('sv-motion') || 'auto'; } catch (e) {}
+  function motionReduced() {
+    if (motionPref === 'on') return false;    /* visitor overrides the OS */
+    if (motionPref === 'off') return true;
+    return reduceMedia.matches;               /* auto = follow the OS */
+  }
+  var reduceMotion = motionReduced();
+  window.__reduced = motionReduced;
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   /* ------------------------------------------------- 1. word splitting */
@@ -531,4 +540,28 @@
     hpTick = true;
     requestAnimationFrame(function () { heroParallax(); hpTick = false; });
   }, { passive: true });
+
+  /* ------------------------------------------- 12. motion preference toggle */
+  var motionLabels = document.querySelectorAll('[data-motion-label]');
+  var MOTION_CYCLE = ['auto', 'on', 'off'];
+
+  function applyMotion(dispatch) {
+    reduceMotion = motionReduced();
+    for (var i = 0; i < motionLabels.length; i++) motionLabels[i].textContent = motionPref;
+    if (dispatch) {
+      window.dispatchEvent(new CustomEvent('motionchange',
+        { detail: { pref: motionPref, reduced: reduceMotion } }));
+    }
+  }
+
+  document.querySelectorAll('[data-motion-toggle]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      motionPref = MOTION_CYCLE[(MOTION_CYCLE.indexOf(motionPref) + 1) % MOTION_CYCLE.length];
+      try { localStorage.setItem('sv-motion', motionPref); } catch (e) {}
+      applyMotion(true);
+    });
+  });
+
+  if (reduceMedia.addEventListener) reduceMedia.addEventListener('change', function () { applyMotion(true); });
+  applyMotion(false);
 })();
