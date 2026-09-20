@@ -545,9 +545,19 @@
   var motionLabels = document.querySelectorAll('[data-motion-label]');
   var MOTION_CYCLE = ['auto', 'on', 'off'];
 
+  var motionBanner = document.getElementById('motion-banner');
+
+  function maybeBanner() {
+    if (!motionBanner) return;
+    var show = motionPref === 'auto' && reduceMedia.matches &&
+      !sessionStorage.getItem('sv-motion-banner');
+    motionBanner.hidden = !show;
+  }
+
   function applyMotion(dispatch) {
     reduceMotion = motionReduced();
     for (var i = 0; i < motionLabels.length; i++) motionLabels[i].textContent = motionPref;
+    maybeBanner();
     if (dispatch) {
       window.dispatchEvent(new CustomEvent('motionchange',
         { detail: { pref: motionPref, reduced: reduceMotion } }));
@@ -560,6 +570,19 @@
       try { localStorage.setItem('sv-motion', motionPref); } catch (e) {}
       applyMotion(true);
     });
+  });
+
+  var motionAccept = document.querySelector('[data-motion-accept]');
+  if (motionAccept) motionAccept.addEventListener('click', function () {
+    motionPref = 'on';
+    try { localStorage.setItem('sv-motion', motionPref); } catch (e) {}
+    applyMotion(true);
+  });
+
+  var motionDismiss = document.querySelector('[data-motion-dismiss]');
+  if (motionDismiss) motionDismiss.addEventListener('click', function () {
+    try { sessionStorage.setItem('sv-motion-banner', '1'); } catch (e) {}
+    maybeBanner();
   });
 
   if (reduceMedia.addEventListener) reduceMedia.addEventListener('change', function () { applyMotion(true); });

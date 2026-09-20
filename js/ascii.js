@@ -289,7 +289,7 @@
   });
 
   window.__site = window.__site || {};
-  window.__site.v = 11;
+  window.__site.v = 12;
   window.__site.ascii = true;
 
   window.__ascii = {

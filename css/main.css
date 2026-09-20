@@ -1535,3 +1535,59 @@ html.vt-circle::view-transition-new(root) {
   text-align: center;
 }
 
+
+/* ==========================================================================
+   MOTION BANNER — one-click override when the OS requests reduced motion
+   ========================================================================== */
+.motion-banner {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 1.25rem;
+  z-index: 95;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem 1.1rem;
+  align-items: center;
+  justify-content: center;
+  max-width: min(92vw, 660px);
+  padding: .85rem 1.2rem;
+  background: var(--bg);
+  color: var(--fg);
+  border: 2px solid var(--fg);
+  border-radius: 14px;
+  box-shadow: 6px 6px 0 var(--fg);
+}
+.motion-banner[hidden] { display: none; }
+.motion-banner__text {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: .8rem;
+  line-height: 1.45;
+}
+.motion-banner__actions { display: flex; align-items: center; gap: .7rem; }
+.motion-btn-quiet {
+  background: none;
+  border: 0;
+  padding: .4rem .2rem;
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: .72rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.motion-banner__v {
+  position: absolute;
+  right: .7rem;
+  bottom: .3rem;
+  font-family: var(--mono);
+  font-size: .58rem;
+  opacity: .5;
+}
+.footer__v {
+  display: inline-block;
+  margin-left: .6rem;
+  font-family: var(--mono);
+  font-size: .62rem;
+  opacity: .55;
+}

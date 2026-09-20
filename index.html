@@ -24,7 +24,7 @@
     rel="stylesheet" />
 
   <!-- Styles -->
-  <link rel="stylesheet" href="css/main.css?v=11" />
+  <link rel="stylesheet" href="css/main.css?v=12" />
 
   <!-- Favicons -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -585,8 +585,18 @@
     <p class="footer__copy">
       © <span data-year>2026</span> DaedalusDesigns. All rights reserved.<br />
       <a class="to-top" href="#top">[ back to top ↑ ]</a>
+      <span class="footer__v">[ build v12 ]</span>
     </p>
   </footer>
+
+  <div class="motion-banner" id="motion-banner" hidden role="region" aria-label="Motion preference">
+    <p class="motion-banner__text">Your device asks for <strong>reduced motion</strong>, so you are seeing the calm version of this site.</p>
+    <div class="motion-banner__actions">
+      <button class="theme-btn theme-btn--sm" type="button" data-motion-accept>Turn motion on</button>
+      <button class="motion-btn-quiet" type="button" data-motion-dismiss>keep it calm</button>
+    </div>
+    <span class="motion-banner__v" aria-hidden="true">build v12</span>
+  </div>
 
   <!-- ========================================================= LIGHTBOX -->
   <div class="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Animation preview">
@@ -599,8 +609,8 @@
     </div>
   </div>
 
-  <script src="js/main.js?v=11" defer></script>
-  <script src="js/ascii.js?v=11" defer></script>
+  <script src="js/main.js?v=12" defer></script>
+  <script src="js/ascii.js?v=12" defer></script>
   <script src="js/lenis.min.js?v=10" defer></script>
   <script src="js/smooth.js?v=11" defer></script>
   <script src="js/phaser.min.js?v=10" defer></script>

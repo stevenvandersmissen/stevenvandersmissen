@@ -1563,6 +1563,62 @@ html.vt-circle::view-transition-new(root) {
 }
 
 
+/* ==========================================================================
+   MOTION BANNER — one-click override when the OS requests reduced motion
+   ========================================================================== */
+.motion-banner {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 1.25rem;
+  z-index: 95;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem 1.1rem;
+  align-items: center;
+  justify-content: center;
+  max-width: min(92vw, 660px);
+  padding: .85rem 1.2rem;
+  background: var(--bg);
+  color: var(--fg);
+  border: 2px solid var(--fg);
+  border-radius: 14px;
+  box-shadow: 6px 6px 0 var(--fg);
+}
+.motion-banner[hidden] { display: none; }
+.motion-banner__text {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: .8rem;
+  line-height: 1.45;
+}
+.motion-banner__actions { display: flex; align-items: center; gap: .7rem; }
+.motion-btn-quiet {
+  background: none;
+  border: 0;
+  padding: .4rem .2rem;
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: .72rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.motion-banner__v {
+  position: absolute;
+  right: .7rem;
+  bottom: .3rem;
+  font-family: var(--mono);
+  font-size: .58rem;
+  opacity: .5;
+}
+.footer__v {
+  display: inline-block;
+  margin-left: .6rem;
+  font-family: var(--mono);
+  font-size: .62rem;
+  opacity: .55;
+}
+
 </style>
 
   <!-- Favicons -->
@@ -2120,8 +2176,18 @@ html.vt-circle::view-transition-new(root) {
     <p class="footer__copy">
       © <span data-year>2026</span> DaedalusDesigns. All rights reserved.<br />
       <a class="to-top" href="#top">[ back to top ↑ ]</a>
+      <span class="footer__v">[ build v12 ]</span>
     </p>
   </footer>
+
+  <div class="motion-banner" id="motion-banner" hidden role="region" aria-label="Motion preference">
+    <p class="motion-banner__text">Your device asks for <strong>reduced motion</strong>, so you are seeing the calm version of this site.</p>
+    <div class="motion-banner__actions">
+      <button class="theme-btn theme-btn--sm" type="button" data-motion-accept>Turn motion on</button>
+      <button class="motion-btn-quiet" type="button" data-motion-dismiss>keep it calm</button>
+    </div>
+    <span class="motion-banner__v" aria-hidden="true">build v12</span>
+  </div>
 
   <!-- ========================================================= LIGHTBOX -->
   <div class="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Animation preview">
@@ -2682,9 +2748,19 @@ html.vt-circle::view-transition-new(root) {
   var motionLabels = document.querySelectorAll('[data-motion-label]');
   var MOTION_CYCLE = ['auto', 'on', 'off'];
 
+  var motionBanner = document.getElementById('motion-banner');
+
+  function maybeBanner() {
+    if (!motionBanner) return;
+    var show = motionPref === 'auto' && reduceMedia.matches &&
+      !sessionStorage.getItem('sv-motion-banner');
+    motionBanner.hidden = !show;
+  }
+
   function applyMotion(dispatch) {
     reduceMotion = motionReduced();
     for (var i = 0; i < motionLabels.length; i++) motionLabels[i].textContent = motionPref;
+    maybeBanner();
     if (dispatch) {
       window.dispatchEvent(new CustomEvent('motionchange',
         { detail: { pref: motionPref, reduced: reduceMotion } }));
@@ -2697,6 +2773,19 @@ html.vt-circle::view-transition-new(root) {
       try { localStorage.setItem('sv-motion', motionPref); } catch (e) {}
       applyMotion(true);
     });
+  });
+
+  var motionAccept = document.querySelector('[data-motion-accept]');
+  if (motionAccept) motionAccept.addEventListener('click', function () {
+    motionPref = 'on';
+    try { localStorage.setItem('sv-motion', motionPref); } catch (e) {}
+    applyMotion(true);
+  });
+
+  var motionDismiss = document.querySelector('[data-motion-dismiss]');
+  if (motionDismiss) motionDismiss.addEventListener('click', function () {
+    try { sessionStorage.setItem('sv-motion-banner', '1'); } catch (e) {}
+    maybeBanner();
   });
 
   if (reduceMedia.addEventListener) reduceMedia.addEventListener('change', function () { applyMotion(true); });
@@ -2996,7 +3085,7 @@ html.vt-circle::view-transition-new(root) {
   });
 
   window.__site = window.__site || {};
-  window.__site.v = 11;
+  window.__site.v = 12;
   window.__site.ascii = true;
 
   window.__ascii = {
