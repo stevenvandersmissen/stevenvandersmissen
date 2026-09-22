@@ -1056,6 +1056,10 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   vertical-align: bottom;
   padding-bottom: 0.06em;
   margin-bottom: -0.06em;
+  /* negative letter-spacing pushes last-glyph ink past the box:
+     give the clip region some air without shifting layout */
+  padding-right: 0.07em;
+  margin-right: -0.07em;
 }
 
 .js .split .w > i {
@@ -1590,4 +1594,14 @@ html.vt-circle::view-transition-new(root) {
   font-family: var(--mono);
   font-size: .62rem;
   opacity: .55;
+}
+
+/* dim mail links in contact cells: visible hover feedback */
+.contact__cell a.v {
+  transition: color .25s var(--ease), opacity .25s var(--ease);
+}
+.contact__cell a.v:hover {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: .3em;
 }

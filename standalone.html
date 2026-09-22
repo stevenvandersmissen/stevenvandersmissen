@@ -1083,6 +1083,10 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   vertical-align: bottom;
   padding-bottom: 0.06em;
   margin-bottom: -0.06em;
+  /* negative letter-spacing pushes last-glyph ink past the box:
+     give the clip region some air without shifting layout */
+  padding-right: 0.07em;
+  margin-right: -0.07em;
 }
 
 .js .split .w > i {
@@ -1619,6 +1623,16 @@ html.vt-circle::view-transition-new(root) {
   opacity: .55;
 }
 
+/* dim mail links in contact cells: visible hover feedback */
+.contact__cell a.v {
+  transition: color .25s var(--ease), opacity .25s var(--ease);
+}
+.contact__cell a.v:hover {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: .3em;
+}
+
 </style>
 
   <!-- Favicons -->
@@ -2143,7 +2157,7 @@ html.vt-circle::view-transition-new(root) {
         <div class="contact__cell" style="--i:2">
           <span class="k">[ WORK ]</span>
           <a href="https://www.tsmmechelen.be/" target="_blank" rel="noopener">TSM Mechelen</a>
-          <span class="v dim" style="font-size:.9rem">steven.vandersmissen@tsmmechelen.net</span>
+          <a class="v dim" style="font-size:.9rem" href="mailto:steven.vandersmissen@tsmmechelen.net">steven.vandersmissen@tsmmechelen.net</a>
           <a class="v dim" style="font-size:.9rem" href="mailto:steven.vandersmissen@ap.be">steven.vandersmissen@ap.be</a>
         </div>
       </div>
@@ -2173,7 +2187,7 @@ html.vt-circle::view-transition-new(root) {
     <p class="footer__copy">
       © <span data-year>2026</span> DaedalusDesigns. All rights reserved.<br />
       <a class="to-top" href="#top">[ back to top ↑ ]</a>
-      <span class="footer__v">[ build v15 ]</span>
+      <span class="footer__v">[ build v16 ]</span>
     </p>
   </footer>
 
