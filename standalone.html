@@ -1081,8 +1081,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   display: inline-block;
   overflow: hidden;
   vertical-align: bottom;
-  padding-bottom: 0.06em;
-  margin-bottom: -0.06em;
+  padding-bottom: 0.16em;   /* room for descenders (g, y, ,) inside the clip box */
+  margin-bottom: -0.16em;
   /* negative letter-spacing pushes last-glyph ink past the box:
      give the clip region some air without shifting layout */
   padding-right: 0.07em;
@@ -2187,7 +2187,7 @@ html.vt-circle::view-transition-new(root) {
     <p class="footer__copy">
       © <span data-year>2026</span> DaedalusDesigns. All rights reserved.<br />
       <a class="to-top" href="#top">[ back to top ↑ ]</a>
-      <span class="footer__v">[ build v16 ]</span>
+      <span class="footer__v">[ build v17 ]</span>
     </p>
   </footer>
 
