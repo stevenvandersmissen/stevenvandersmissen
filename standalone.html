@@ -2172,7 +2172,7 @@ html.vt-circle::view-transition-new(root) {
     <p class="footer__copy">
       © <span data-year>2026</span> DaedalusDesigns. All rights reserved.<br />
       <a class="to-top" href="#top">[ back to top ↑ ]</a>
-      <span class="footer__v">[ build v13 ]</span>
+      <span class="footer__v">[ build v14 ]</span>
     </p>
   </footer>
 
@@ -2218,7 +2218,7 @@ html.vt-circle::view-transition-new(root) {
   }
   window.__reduced = motionReduced;
   window.__site = window.__site || {};
-  window.__site.v = 13;
+  window.__site.v = 14;
   window.__site.motion = motionPref;
 
   var motionLabels = document.querySelectorAll('[data-motion-label]');
@@ -3057,7 +3057,7 @@ html.vt-circle::view-transition-new(root) {
   }
 
   function setRunning(on) {
-    if (reduce) return;
+    if (reduce && on) return;   /* never START while reduced; stopping always allowed */
     if (on && !running) { running = true; raf = requestAnimationFrame(tick); }
     if (!on && running) { running = false; cancelAnimationFrame(raf); }
   }
@@ -3104,7 +3104,6 @@ html.vt-circle::view-transition-new(root) {
   });
 
   window.__site = window.__site || {};
-  window.__site.v = 12;
   window.__site.ascii = true;
 
   window.__ascii = {

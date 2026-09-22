@@ -242,7 +242,7 @@
   }
 
   function setRunning(on) {
-    if (reduce) return;
+    if (reduce && on) return;   /* never START while reduced; stopping always allowed */
     if (on && !running) { running = true; raf = requestAnimationFrame(tick); }
     if (!on && running) { running = false; cancelAnimationFrame(raf); }
   }
@@ -289,7 +289,6 @@
   });
 
   window.__site = window.__site || {};
-  window.__site.v = 12;
   window.__site.ascii = true;
 
   window.__ascii = {

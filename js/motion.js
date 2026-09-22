@@ -19,7 +19,7 @@
   }
   window.__reduced = motionReduced;
   window.__site = window.__site || {};
-  window.__site.v = 13;
+  window.__site.v = 14;
   window.__site.motion = motionPref;
 
   var motionLabels = document.querySelectorAll('[data-motion-label]');
